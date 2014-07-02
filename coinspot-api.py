@@ -8,7 +8,16 @@ from pprint import pprint
 api_key = '' # Add your Coinspot API Key
 api_secret = '' # Add your Coinspot API Secret
 
-my_hmac = hmac.new(api_secret,'',hashlib.sha256)
+class Complex:
+    def __init__(self, api_key, api_secret):
+        self.key = api_key
+        self.secret = api_secret
+        self.endpoint = "https://www.coinspot.com.au/api"
+
+    def hmac_encode(self, ):
+
+        return
+my_hmac = hmac.new(api_secret, '', hashlib.sha256)
 my_hmac.update('message')
 print my_hmac.hexdigest()
 
