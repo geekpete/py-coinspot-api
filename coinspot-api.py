@@ -7,8 +7,8 @@ import json
 from pprint import pprint
 from time import time
 
-#api_key = '' # Add your Coinspot API Key
-#api_secret = '' # Add your Coinspot API Secret
+api_key = '' # Add your Coinspot API Key
+api_secret = '' # Add your Coinspot API Secret
 
 
 class coinspot:
@@ -35,20 +35,26 @@ class coinspot:
         params = urllib.urlencode(postdata)
         #print "params:"
         #print params
-        headers = {"Content-type": "Content-type: application/json","Accept": "text/plain"}
+        headers = {}
+        #headers['Content-type'] = 'application/json'
+        headers['Content-type'] = 'text/json'
+        headers['Accept'] = 'text/plain'
         headers['key'] = self.api_key
         headers['sign'] = signedMessage
+        #headers['User-Agent'] = 'py-coinspot-api https://github.com/geekpete/py-coinspot-api'
         #print "headers:"
         #print headers
         #print self.endpoint
 
         conn = httplib.HTTPSConnection(self.endpoint)
+        conn.set_debuglevel(1)
         conn.request("POST", path, params, headers)
         response = conn.getresponse()
         print response.status, response.reason
         data = response.read()
         conn.close()
-        print json.loads(data)
+        print data
+        #print json.loads(data)
 
     def spot(self):
         self.request('/api/spot', {})
@@ -59,6 +65,8 @@ class coinspot:
     def myorders(self):
         self.request('/api/my/orders', {})
 
+
+# Test it out:
 client = coinspot(api_key, api_secret)
 client.spot()
 client.balances()
