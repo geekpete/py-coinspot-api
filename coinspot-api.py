@@ -11,7 +11,6 @@ from time import time
 #api_secret = '' # Add your Coinspot API Secret
 
 
-
 class coinspot:
     def __init__(self, api_key, api_secret):
         self.api_key = api_key
@@ -19,29 +18,29 @@ class coinspot:
         self.endpoint = "www.coinspot.com.au"
 
     def get_signed_request(self, data):
-        print "data:"
-        print data
+        #print "data:"
+        #print data
         return hmac.new(self.api_secret, data, hashlib.sha512).hexdigest()
 
     def request(self, path, postdata):
         nonce = int(time())
         postdata['nonce'] = nonce
 
-        print "postdata:"
-        print postdata
+        #print "postdata:"
+        #print postdata
         signedMessage = self.get_signed_request(json.dumps(postdata))
-        print "signedMessage:"
-        print signedMessage
+        #print "signedMessage:"
+        #print signedMessage
 
         params = urllib.urlencode(postdata)
-        print "params:"
-        print params
+        #print "params:"
+        #print params
         headers = {"Content-type": "Content-type: application/json","Accept": "text/plain"}
         headers['key'] = self.api_key
         headers['sign'] = signedMessage
-        print "headers:"
-        print headers
-        print self.endpoint
+        #print "headers:"
+        #print headers
+        #print self.endpoint
 
         conn = httplib.HTTPSConnection(self.endpoint)
         conn.request("POST", path, params, headers)
@@ -49,24 +48,18 @@ class coinspot:
         print response.status, response.reason
         data = response.read()
         conn.close()
-        print data
-
-
-
-	def balances(self):
-		self.request('/api/my/balances', {})
-
-	def myorders(self):
-		self.request('/api/my/orders', {})
+        print json.loads(data)
 
     def spot(self):
-        #print "listing spot prices"
-        #self.request('/api/spot', {})
-        self.request('/api/my/balances', {})
+        self.request('/api/spot', {})
 
+    def balances(self):
+		self.request('/api/my/balances', {})
+
+    def myorders(self):
+        self.request('/api/my/orders', {})
 
 client = coinspot(api_key, api_secret)
-
 client.spot()
 client.balances()
 client.myorders()
