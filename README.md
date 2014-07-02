@@ -8,7 +8,7 @@ Please see [https://www.coinspot.com.au/api](https://www.coinspot.com.au/api) fo
 
 Example Usage
 =============
-
+```
 import py-coinspot-api
 
 key = 'xxxxx'
@@ -25,3 +25,4 @@ client.spot()
 client.buy('BTC', 0.3, 529)
 
 client.sell('DOGE', 0.3, 0.00024)
+```
