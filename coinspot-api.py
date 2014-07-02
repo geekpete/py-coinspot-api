@@ -47,7 +47,7 @@ class coinspot:
         #print self.endpoint
 
         conn = httplib.HTTPSConnection(self.endpoint)
-        conn.set_debuglevel(1)
+        #conn.set_debuglevel(1)
         conn.request("POST", path, params, headers)
         response = conn.getresponse()
         print response.status, response.reason
