@@ -1,27 +1,73 @@
 #!/usr/bin/python
 __author__ = 'Peter Dyson <pete@geekpete.com>'
 
-import hmac
-import hashlib
+import hmac,hashlib
+import httplib, urllib
+import json
 from pprint import pprint
+from time import time
 
-api_key = '' # Add your Coinspot API Key
-api_secret = '' # Add your Coinspot API Secret
+#api_key = '' # Add your Coinspot API Key
+#api_secret = '' # Add your Coinspot API Secret
 
-class Complex:
+
+
+class coinspot:
     def __init__(self, api_key, api_secret):
-        self.key = api_key
-        self.secret = api_secret
-        self.endpoint = "https://www.coinspot.com.au/api"
+        self.api_key = api_key
+        self.api_secret = api_secret
+        self.endpoint = "www.coinspot.com.au"
 
-    def hmac_encode(self, ):
+    def get_signed_request(self, data):
+        print "data:"
+        print data
+        return hmac.new(self.api_secret, data, hashlib.sha512).hexdigest()
 
-        return
-my_hmac = hmac.new(api_secret, '', hashlib.sha256)
-my_hmac.update('message')
-print my_hmac.hexdigest()
+    def request(self, path, postdata):
+        nonce = int(time())
+        postdata['nonce'] = nonce
 
-#dk = hashlib.pbkdf2_hmac('sha256', b'password', b'salt', 100000)
-#binascii.hexlify(dk)
+        print "postdata:"
+        print postdata
+        signedMessage = self.get_signed_request(json.dumps(postdata))
+        print "signedMessage:"
+        print signedMessage
 
-#pprint(vars(hashlib))
+        params = urllib.urlencode(postdata)
+        print "params:"
+        print params
+        headers = {"Content-type": "Content-type: application/json","Accept": "text/plain"}
+        headers['key'] = self.api_key
+        headers['sign'] = signedMessage
+        print "headers:"
+        print headers
+        print self.endpoint
+
+        conn = httplib.HTTPSConnection(self.endpoint)
+        conn.request("POST", path, params, headers)
+        response = conn.getresponse()
+        print response.status, response.reason
+        data = response.read()
+        conn.close()
+        print data
+
+
+
+	def balances(self):
+		self.request('/api/my/balances', {})
+
+	def myorders(self):
+		self.request('/api/my/orders', {})
+
+    def spot(self):
+        #print "listing spot prices"
+        #self.request('/api/spot', {})
+        self.request('/api/my/balances', {})
+
+
+client = coinspot(api_key, api_secret)
+
+client.spot()
+client.balances()
+client.myorders()
+
