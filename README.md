@@ -14,7 +14,7 @@ import py-coinspot-api
 key = 'xxxxx'
 secret = 'yyyyyyyyyyyyyyy'
 
-client = py-coinspot-api.new(key, secret)
+client = py-coinspot-api(key, secret)
 
 client.orders('LTC')
 
