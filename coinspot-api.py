@@ -26,18 +26,18 @@ class coinspot:
         nonce = int(time())
         postdata['nonce'] = nonce
 
+        params = json.dumps(postdata, separators=(',', ':'))
+
         #print "postdata:"
         #print postdata
-        signedMessage = self.get_signed_request(json.dumps(postdata))
+        signedMessage = self.get_signed_request(params)
         #print "signedMessage:"
         #print signedMessage
 
-        params = urllib.urlencode(postdata)
         #print "params:"
         #print params
         headers = {}
-        #headers['Content-type'] = 'application/json'
-        headers['Content-type'] = 'text/json'
+        headers['Content-type'] = 'application/json'
         headers['Accept'] = 'text/plain'
         headers['key'] = self.api_key
         headers['sign'] = signedMessage
