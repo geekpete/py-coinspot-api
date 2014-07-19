@@ -1,5 +1,6 @@
 #!/usr/bin/python
 __author__ = 'Peter Dyson <pete@geekpete.com>'
+__version__ = '0.1.0'
 
 import hmac,hashlib
 import httplib, urllib
@@ -10,7 +11,7 @@ from time import time, sleep
 #api_key = '' # Add your Coinspot API Key
 #api_secret = '' # Add your Coinspot API Secret
 
-class coinspot:
+class Coinspot:
     def __init__(self, api_key, api_secret):
         self.api_key = api_key
         self.api_secret = api_secret
@@ -29,7 +30,7 @@ class coinspot:
         headers['Accept'] = 'text/plain'
         headers['key'] = self.api_key
         headers['sign'] = signedMessage
-        headers['User-Agent'] = 'py-coinspot-api/0.1 (https://github.com/geekpete/py-coinspot-api)'
+        headers['User-Agent'] = 'py-coinspot-api/%s (https://github.com/geekpete/py-coinspot-api)' % __version__
 
         conn = httplib.HTTPSConnection(self.endpoint)
         #conn.set_debuglevel(1)
@@ -46,17 +47,44 @@ class coinspot:
     def balances(self):
 		self.request('/api/my/balances', {})
 
-    def orders(self, cointype):
-        self.request('/api/orders', {cointype:'%s' % cointype} )
-
     def myorders(self):
         self.request('/api/my/orders', {})
 
+    def orders(self, cointype):
+        """
+        List Open Orders
+
+        Url:
+        /orders
+
+        Inputs:
+        cointype - the coin shortname, example value 'BTC', 'LTC', 'DOGE'
+
+        Response:
+        status - ok, error
+        buyorders - array containing all the open buy orders
+        sellorders - array containing all the open sell orders
+        """
+        data = {'cointype':cointype}
+        self.request('/api/orders', data )
+
+    def buy(self, cointype, amount, rate):
+        data = {'cointype':cointype, 'amount':amount, 'rate':rate}
+        print data
+        self.request('/api/my/buy', data)
+
+    def sell(self, cointype, amount, rate):
+        data = {'cointype':cointype, 'amount':amount, 'rate':rate}
+        print data
+        self.request('/api/my/sell', data)
+
+
 # Test it out:
-client = coinspot(api_key, api_secret)
+client = Coinspot(api_key, api_secret)
 #client.spot()
 #sleep(2)
 #client.balances()
 #sleep(2)
-#client.myorders()
-client.orders('doge')
+client.myorders()
+#client.orders('DOGE')
+#client.sell('DOGE', '20', '0.000280')
