@@ -5,7 +5,7 @@ import hmac,hashlib
 import httplib, urllib
 import json
 from pprint import pprint
-from time import time
+from time import time, sleep
 
 #api_key = '' # Add your Coinspot API Key
 #api_secret = '' # Add your Coinspot API Secret
@@ -46,13 +46,17 @@ class coinspot:
     def balances(self):
 		self.request('/api/my/balances', {})
 
+    def orders(self, cointype):
+        self.request('/api/orders', {cointype:'%s' % cointype} )
+
     def myorders(self):
         self.request('/api/my/orders', {})
 
-
 # Test it out:
 client = coinspot(api_key, api_secret)
-client.spot()
-client.balances()
-client.myorders()
-
+#client.spot()
+#sleep(2)
+#client.balances()
+#sleep(2)
+#client.myorders()
+client.orders('doge')
