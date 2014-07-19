@@ -7,9 +7,8 @@ import json
 from pprint import pprint
 from time import time
 
-api_key = '' # Add your Coinspot API Key
-api_secret = '' # Add your Coinspot API Secret
-
+#api_key = '' # Add your Coinspot API Key
+#api_secret = '' # Add your Coinspot API Secret
 
 class coinspot:
     def __init__(self, api_key, api_secret):
@@ -18,33 +17,19 @@ class coinspot:
         self.endpoint = "www.coinspot.com.au"
 
     def get_signed_request(self, data):
-        #print "data:"
-        #print data
         return hmac.new(self.api_secret, data, hashlib.sha512).hexdigest()
 
     def request(self, path, postdata):
         nonce = int(time())
         postdata['nonce'] = nonce
-
         params = json.dumps(postdata, separators=(',', ':'))
-
-        #print "postdata:"
-        #print postdata
         signedMessage = self.get_signed_request(params)
-        #print "signedMessage:"
-        #print signedMessage
-
-        #print "params:"
-        #print params
         headers = {}
         headers['Content-type'] = 'application/json'
         headers['Accept'] = 'text/plain'
         headers['key'] = self.api_key
         headers['sign'] = signedMessage
-        #headers['User-Agent'] = 'py-coinspot-api https://github.com/geekpete/py-coinspot-api'
-        #print "headers:"
-        #print headers
-        #print self.endpoint
+        headers['User-Agent'] = 'py-coinspot-api/0.1 (https://github.com/geekpete/py-coinspot-api)'
 
         conn = httplib.HTTPSConnection(self.endpoint)
         #conn.set_debuglevel(1)
@@ -54,7 +39,6 @@ class coinspot:
         data = response.read()
         conn.close()
         print data
-        #print json.loads(data)
 
     def spot(self):
         self.request('/api/spot', {})
