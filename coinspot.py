@@ -2,6 +2,23 @@
 __author__ = 'Peter Dyson <pete@geekpete.com>'
 __version__ = '0.1.0'
 
+"""
+coinspot.py - A python library for the Coinspot API.
+
+Copyright (C) 2014 Peter Dyson <pete@geekpete.com>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+"""
+
 import hmac,hashlib
 import httplib, urllib
 import json
@@ -12,10 +29,13 @@ from time import time, sleep
 #api_secret = '' # Add your Coinspot API Secret
 
 class Coinspot:
-    def __init__(self, api_key, api_secret):
+    """
+    Coinspot class implementing API calls for the Coinspot API
+    """
+    def __init__(self, api_key, api_secret, endpoint='www.coinspot.com.au'):
         self.api_key = api_key
         self.api_secret = api_secret
-        self.endpoint = "www.coinspot.com.au"
+        self.endpoint = endpoint
 
     def get_signed_request(self, data):
         return hmac.new(self.api_secret, data, hashlib.sha512).hexdigest()
@@ -36,10 +56,10 @@ class Coinspot:
         #conn.set_debuglevel(1)
         conn.request("POST", path, params, headers)
         response = conn.getresponse()
-        print response.status, response.reason
+        #print response.status, response.reason
         data = response.read()
         conn.close()
-        print data
+        return data
 
     def spot(self):
         self.request('/api/spot', {})
@@ -57,34 +77,27 @@ class Coinspot:
         Url:
         /orders
 
-        Inputs:
-        cointype - the coin shortname, example value 'BTC', 'LTC', 'DOGE'
+        :param cointype:
+            the coin shortname in uppercase, example value 'BTC', 'LTC', 'DOGE'
+        :type cointype:
+            String
 
         Response:
-        status - ok, error
-        buyorders - array containing all the open buy orders
-        sellorders - array containing all the open sell orders
+            status - ok, error
+            buyorders - array containing all the open buy orders
+            sellorders - array containing all the open sell orders
+
+
         """
         data = {'cointype':cointype}
         self.request('/api/orders', data )
 
     def buy(self, cointype, amount, rate):
         data = {'cointype':cointype, 'amount':amount, 'rate':rate}
-        print data
+        #print data
         self.request('/api/my/buy', data)
 
     def sell(self, cointype, amount, rate):
         data = {'cointype':cointype, 'amount':amount, 'rate':rate}
-        print data
+        #print data
         self.request('/api/my/sell', data)
-
-
-# Test it out:
-client = Coinspot(api_key, api_secret)
-#client.spot()
-#sleep(2)
-#client.balances()
-#sleep(2)
-client.myorders()
-#client.orders('DOGE')
-#client.sell('DOGE', '20', '0.000280')
