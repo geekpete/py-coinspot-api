@@ -90,7 +90,7 @@ class Coinspot:
 
         """
         data = {'cointype':cointype}
-        self.request('/api/orders', data )
+        return self.request('/api/orders', data )
 
     def buy(self, cointype, amount, rate):
         data = {'cointype':cointype, 'amount':amount, 'rate':rate}
