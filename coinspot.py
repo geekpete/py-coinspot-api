@@ -24,11 +24,12 @@ GNU General Public License for more details.
 
 """
 
-import hmac,hashlib
-import httplib, urllib
+import hmac
+import hashlib
+import httplib
 import json
-from pprint import pprint
-from time import time, sleep
+from time import time
+
 
 class Coinspot:
     """
@@ -107,7 +108,7 @@ class Coinspot:
         :return:
             status - ok, error
             quote - the rate per coin
-            timeframe - estimate hours to wait for trade to complete (0 = immediate trade)
+            timeframe - estimate of hours to wait for trade to complete (0 = immediate trade)
 
         """
         request_data = {'cointype':cointype, 'amount':amount}
@@ -126,7 +127,7 @@ class Coinspot:
         :return:
             status - ok, error
             quote - the rate per coin
-            timeframe - estimate hours to wait for trade to complete (0 = immediate trade)
+            timeframe - estimate of hours to wait for trade to complete (0 = immediate trade)
 
         """
         request_data = {'cointype':cointype, 'amount':amount}
