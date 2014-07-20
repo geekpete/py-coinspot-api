@@ -1,6 +1,8 @@
 #!/usr/bin/python
 __author__ = 'Peter Dyson <pete@geekpete.com>'
 __version__ = '0.1.0'
+__license__ = 'gplv3'
+__source__ = 'http://github.com/geekpete/py-coinspot-api/coinspot.py'
 
 """
 coinspot.py - A python library for the Coinspot API.
@@ -17,6 +19,9 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
+.. note:: Please see https://www.coinspot.com.au/api for documentation on the CoinSpot API.
+.. note:: All requests and responses will be JSON
+
 """
 
 import hmac,hashlib
@@ -24,9 +29,6 @@ import httplib, urllib
 import json
 from pprint import pprint
 from time import time, sleep
-
-#api_key = '' # Add your Coinspot API Key
-#api_secret = '' # Add your Coinspot API Secret
 
 class Coinspot:
     """
@@ -61,41 +63,168 @@ class Coinspot:
         conn.close()
         return response_data
 
-    def spot(self):
-        return self.request('/api/spot', {})
-
-    def balances(self):
-		return self.request('/api/my/balances', {})
-
-    def myorders(self):
-        return self.request('/api/my/orders', {})
-
-    def orders(self, cointype):
+    def sendcoin(self, cointype, address, amount):
         """
-        List Open Orders
-
-        Url:
-        /orders
+        Send coins
 
         :param cointype:
             the coin shortname in uppercase, example value 'BTC', 'LTC', 'DOGE'
-        :type cointype:
-            String
+        :param address:
+            the address to send the coins to
+        :param amount:
+            the amount of coins to send
+        :return:
+            status - ok, error
 
-        Response:
+        """
+        request_data = {'cointype':cointype, 'address':address, 'amount':amount}
+        return self.request('/api/my/coin/send', request_data)
+
+    def coindeposit(self, cointype):
+        """
+        Deposit coins
+
+        :param cointype:
+            the coin shortname in uppercase, example value 'BTC', 'LTC', 'DOGE'
+        :return:
+            status - ok, error
+            address - your deposit address for the coin
+
+        """
+        request_data = {'cointype':cointype}
+        return self.request('/api/my/coin/deposit', request_data)
+
+    def quotebuy(self, cointype, amount):
+        """
+        Quick buy quote
+
+        Fetches a quote on rate per coin and estimated timeframe to buy an amount of coins
+
+        :param cointype:
+            the coin shortname in uppercase, example value 'BTC', 'LTC', 'DOGE'
+        :param amount:
+            the amount of coins to sell
+        :return:
+            status - ok, error
+            quote - the rate per coin
+            timeframe - estimate hours to wait for trade to complete (0 = immediate trade)
+
+        """
+        request_data = {'cointype':cointype, 'amount':amount}
+        return self.request('/api/quote/buy', request_data)
+
+    def quotesell(self, cointype, amount):
+        """
+        Quick sell quote
+
+        Fetches a quote on rate per coin and estimated timeframe to sell an amount of coins
+
+        :param cointype:
+            the coin shortname in uppercase, example value 'BTC', 'LTC', 'DOGE'
+        :param amount:
+            the amount of coins to sell
+        :return:
+            status - ok, error
+            quote - the rate per coin
+            timeframe - estimate hours to wait for trade to complete (0 = immediate trade)
+
+        """
+        request_data = {'cointype':cointype, 'amount':amount}
+        return self.request('/api/quote/sell', request_data)
+
+
+    def spot(self):
+        """Fetches the list of spot prices
+
+        :return:
+            status - ok, error
+            spot  - a list of the current spot price for each coin type
+
+        """
+        return self.request('/api/spot', {})
+
+    def balances(self):
+        """
+        List my balances
+
+        :return:
+            status - ok, error
+            balances - object containing one property for each coin with your balance for that coin.
+
+        """
+        return self.request('/api/my/balances', {})
+
+    def orderhistory(self, cointype):
+        """
+        Lists the last 1000 completed orders
+
+        :param cointype:
+            the coin shortname in uppercase, example value 'BTC', 'LTC', 'DOGE'
+        :return:
+            status - ok, error
+            orders - list of the last 1000 completed orders
+
+        """
+        request_data = {'cointype':cointype}
+        return self.request('/api/orders/history', request_data)
+
+    def orders(self, cointype):
+        """
+        Lists all open orders
+
+        :param cointype:
+            the coin shortname in uppercase, example value 'BTC', 'LTC', 'DOGE'
+        :return:
             status - ok, error
             buyorders - array containing all the open buy orders
             sellorders - array containing all the open sell orders
-
 
         """
         request_data = {'cointype':cointype}
         return self.request('/api/orders', request_data)
 
+    def myorders(self):
+        """
+        List my buy and sell orders
+
+        :return:
+            status - ok, error
+            buyorders - array containing all your buy orders
+            sellorders - array containing all your sell orders
+
+        """
+        return self.request('/api/my/orders', {})
+
     def buy(self, cointype, amount, rate):
+        """
+        Place buy orders
+
+        :param cointype:
+            the coin shortname in uppercase, example value 'BTC', 'LTC', 'DOGE'
+        :param amount:
+            the amount of coins you want to buy, max precision 8 decimal places
+        :param rate:
+            the rate in AUD you are willing to pay, max precision 6 decimal places
+        :return:
+            status - ok, error
+
+        """
         request_data = {'cointype':cointype, 'amount':amount, 'rate':rate}
         return self.request('/api/my/buy', request_data)
 
     def sell(self, cointype, amount, rate):
+        """
+        Place sell orders
+
+        :param cointype:
+            the coin shortname in uppercase, example value 'BTC', 'LTC', 'DOGE'
+        :param amount:
+            the amount of coins you want to sell, max precision 8 decimal places
+        :param rate:
+            the rate in AUD you are willing to sell for, max precision 6 decimal places
+        :return:
+            status - ok, error
+
+        """
         request_data = {'cointype':cointype, 'amount':amount, 'rate':rate}
         self.request('/api/my/sell', request_data)
