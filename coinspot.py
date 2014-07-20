@@ -57,18 +57,18 @@ class Coinspot:
         conn.request("POST", path, params, headers)
         response = conn.getresponse()
         #print response.status, response.reason
-        data = response.read()
+        response_data = response.read()
         conn.close()
-        return data
+        return response_data
 
     def spot(self):
-        self.request('/api/spot', {})
+        return self.request('/api/spot', {})
 
     def balances(self):
-		self.request('/api/my/balances', {})
+		return self.request('/api/my/balances', {})
 
     def myorders(self):
-        self.request('/api/my/orders', {})
+        return self.request('/api/my/orders', {})
 
     def orders(self, cointype):
         """
@@ -89,15 +89,13 @@ class Coinspot:
 
 
         """
-        data = {'cointype':cointype}
-        return self.request('/api/orders', data )
+        request_data = {'cointype':cointype}
+        return self.request('/api/orders', request_data)
 
     def buy(self, cointype, amount, rate):
-        data = {'cointype':cointype, 'amount':amount, 'rate':rate}
-        #print data
-        self.request('/api/my/buy', data)
+        request_data = {'cointype':cointype, 'amount':amount, 'rate':rate}
+        return self.request('/api/my/buy', request_data)
 
     def sell(self, cointype, amount, rate):
-        data = {'cointype':cointype, 'amount':amount, 'rate':rate}
-        #print data
-        self.request('/api/my/sell', data)
+        request_data = {'cointype':cointype, 'amount':amount, 'rate':rate}
+        self.request('/api/my/sell', request_data)
