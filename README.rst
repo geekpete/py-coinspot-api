@@ -19,6 +19,12 @@ Installation
 
     pip install py-coinspot-api
 
+or
+
+::
+
+    sudo pip install py-coinspot-api
+
 
 Documentation
 =============
