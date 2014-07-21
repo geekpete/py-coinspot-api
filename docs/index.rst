@@ -6,7 +6,7 @@
 Py-coinspot-api Documentation
 =============================
 
-
+.. note:: All requests and responses will be JSON
 
 Contents:
 
