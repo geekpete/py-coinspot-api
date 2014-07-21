@@ -6,6 +6,7 @@ A python library for the Coinspot API.
 Copyright (C) 2014 Peter Dyson pete@geekpete.com
 
 Source: http://github.com/geekpete/py-coinspot-api
+PyPi:
 
 Please see https://www.coinspot.com.au/api for documentation on the
 CoinSpot API.
