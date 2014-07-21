@@ -15,13 +15,11 @@ CoinSpot API.
 
 Installation
 ============
-
 ::
 
     pip install py-coinspot-api --user
 
 or
-
 ::
 
     sudo pip install py-coinspot-api
