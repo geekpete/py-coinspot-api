@@ -65,6 +65,13 @@ Example Usage
     # Donate a craptonne of Dogecoins to the author of this library! Much Appreciate!!!
     print client.send('DOGE', 'DJrHRxurwQoBUe7r9RsMkMrTxj92wXd5gs', 10000)
 
+Send Dogecoins of appreciation
+==============================
+
+If you like this software, you can always sling me some Doges to:
+
+DJrHRxurwQoBUe7r9RsMkMrTxj92wXd5gs
+
 
 License
 =======
