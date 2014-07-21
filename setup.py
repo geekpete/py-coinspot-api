@@ -1,5 +1,5 @@
-from setuptools import setup, find_packages # Always prefer setuptools over distutils
-from codecs import open # To use a consistent encoding
+from setuptools import setup, find_packages  # Always prefer setuptools over distutils
+from codecs import open  # To use a consistent encoding
 from os import path
 
 here = path.abspath(path.dirname(__file__))
@@ -13,7 +13,7 @@ setup(
     version='0.1.0',
 
     description='A python library for the Coinspot API',
-    long_description='A Coinspot API in Python that implements the API calls listed on the Coinspot API documentation page https://www.coinspot.com.au/api',
+    long_description='py-coinspot-api is a library to interface with the Coinspot cryptocurrency trading API.'
 
     # The project's main homepage.
     url='https://github.com/geekpete/py-coinspot-api',
@@ -48,6 +48,4 @@ setup(
     ],
     keywords='coinspot api development bitcoin dogecoin litecoin cryptocurrency',
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
-
-    },
 )
