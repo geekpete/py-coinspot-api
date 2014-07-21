@@ -30,3 +30,6 @@ print client.sell('DOGE', '20', '0.000280')
 
 # Get a quote on buying a billion Dogecoins, with estimation of timeframe
 print client.quotebuy('DOGE', 1000000000)
+
+# Donate a craptonne of Dogecoins to the author of this library! Much Appreciate!!!
+print client.send('DOGE', 'DJrHRxurwQoBUe7r9RsMkMrTxj92wXd5gs', 10000)

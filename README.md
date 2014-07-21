@@ -37,15 +37,18 @@ from coinspot import Coinspot
 key = 'xxxxx'
 secret = 'yyyyyyyyyyyyyyy'
 
-client = Coinspot(api_key, api_secret)
+print client = Coinspot(api_key, api_secret)
 
-client.orders('LTC')
+print client.orders('LTC')
 
-client.myorders()
+print client.myorders()
 
-client.spot()
+print client.spot()
 
-client.buy('BTC', 0.3, 529)
+print client.buy('BTC', 0.3, 529)
 
-client.sell('DOGE', 0.3, 0.00024)
+print client.sell('DOGE', 0.3, 0.00024)
+
+# Donate a craptonne of Dogecoins to the author of this library! Much Appreciate!!!
+print client.send('DOGE', 'DJrHRxurwQoBUe7r9RsMkMrTxj92wXd5gs', 10000)
 ```
