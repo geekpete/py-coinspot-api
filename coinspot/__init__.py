@@ -75,7 +75,7 @@ class Coinspot:
         :param amount:
             the amount of coins to send
         :return:
-            status - ok, error
+            - status - ok, error
 
         """
         request_data = {'cointype':cointype, 'address':address, 'amount':amount}
@@ -88,8 +88,8 @@ class Coinspot:
         :param cointype:
             the coin shortname in uppercase, example value 'BTC', 'LTC', 'DOGE'
         :return:
-            status - ok, error
-            address - your deposit address for the coin
+            - status - ok, error
+            - address - your deposit address for the coin
 
         """
         request_data = {'cointype':cointype}
@@ -125,9 +125,9 @@ class Coinspot:
         :param amount:
             the amount of coins to sell
         :return:
-            status - ok, error
-            quote - the rate per coin
-            timeframe - estimate of hours to wait for trade to complete (0 = immediate trade)
+            - status - ok, error
+            - quote - the rate per coin
+            - timeframe - estimate of hours to wait for trade to complete (0 = immediate trade)
 
         """
         request_data = {'cointype':cointype, 'amount':amount}
@@ -139,8 +139,8 @@ class Coinspot:
         Fetch the latest spot prices
 
         :return:
-            status - ok, error
-            spot  - a list of the current spot price for each coin type
+            - status - ok, error
+            - spot  - a list of the current spot price for each coin type
 
         """
         return self._request('/api/spot', {})
@@ -150,8 +150,8 @@ class Coinspot:
         List my balances
 
         :return:
-            status - ok, error
-            balances - object containing one property for each coin with your balance for that coin.
+            - status - ok, error
+            - balances - object containing one property for each coin with your balance for that coin.
 
         """
         return self._request('/api/my/balances', {})
@@ -163,8 +163,8 @@ class Coinspot:
         :param cointype:
             the coin shortname in uppercase, example value 'BTC', 'LTC', 'DOGE'
         :return:
-            status - ok, error
-            orders - list of the last 1000 completed orders
+            - status - ok, error
+            - orders - list of the last 1000 completed orders
 
         """
         request_data = {'cointype':cointype}
@@ -177,9 +177,9 @@ class Coinspot:
         :param cointype:
             the coin shortname in uppercase, example value 'BTC', 'LTC', 'DOGE'
         :return:
-            status - ok, error
-            buyorders - array containing all the open buy orders
-            sellorders - array containing all the open sell orders
+            - status - ok, error
+            - buyorders - array containing all the open buy orders
+            - sellorders - array containing all the open sell orders
 
         """
         request_data = {'cointype':cointype}
@@ -190,9 +190,9 @@ class Coinspot:
         List my buy and sell orders
 
         :return:
-            status - ok, error
-            buyorders - array containing all your buy orders
-            sellorders - array containing all your sell orders
+            - status - ok, error
+            - buyorders - array containing all your buy orders
+            - sellorders - array containing all your sell orders
 
         """
         return self._request('/api/my/orders', {})
@@ -208,7 +208,7 @@ class Coinspot:
         :param rate:
             the rate in AUD you are willing to pay, max precision 6 decimal places
         :return:
-            status - ok, error
+            - status - ok, error
 
         """
         request_data = {'cointype':cointype, 'amount':amount, 'rate':rate}
@@ -225,7 +225,7 @@ class Coinspot:
         :param rate:
             the rate in AUD you are willing to sell for, max precision 6 decimal places
         :return:
-            status - ok, error
+            - status - ok, error
 
         """
         request_data = {'cointype':cointype, 'amount':amount, 'rate':rate}
