@@ -12,6 +12,14 @@ CoinSpot API.
 
 **NOTE:** All requests and responses will be JSON
 
+Installation
+============
+
+::
+
+    pip install py-coinspot-api
+
+
 Documentation
 =============
 
@@ -21,6 +29,7 @@ TODO
 ====
 
 -  Add exception handling.
+
 
 Example Usage
 =============
