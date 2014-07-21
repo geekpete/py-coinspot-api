@@ -6,6 +6,10 @@
 Python Coinspot API - Coinspot Class
 ====================================
 
+.. note: Source: http://github.com/geekpete/py-coinspot-api/coinspot.py
+
+.. note: PyPi: https://pypi.python.org/pypi/py-coinspot-api/
+
 .. note:: All requests and responses will be JSON
 
 Contents:
