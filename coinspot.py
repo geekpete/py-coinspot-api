@@ -1,7 +1,7 @@
 #!/usr/bin/python
 __author__ = 'Peter Dyson <pete@geekpete.com>'
 __version__ = '0.1.0'
-__license__ = 'gplv3'
+__license__ = 'GPLv3'
 __source__ = 'http://github.com/geekpete/py-coinspot-api/coinspot.py'
 
 """
@@ -135,7 +135,8 @@ class Coinspot:
 
 
     def spot(self):
-        """Fetches the list of spot prices
+        """
+        Fetch the latest spot prices
 
         :return:
             status - ok, error
