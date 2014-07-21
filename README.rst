@@ -29,8 +29,8 @@ or
     sudo pip install py-coinspot-api
 
 
-Documentation
-=============
+Class Documentation
+===================
 
 http://py-coinspot-api.readthedocs.org/en/latest/
 
