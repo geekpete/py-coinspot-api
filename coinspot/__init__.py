@@ -106,9 +106,9 @@ class Coinspot:
         :param amount:
             the amount of coins to sell
         :return:
-            status - ok, error
-            quote - the rate per coin
-            timeframe - estimate of hours to wait for trade to complete (0 = immediate trade)
+            - status - ok, error
+            - quote - the rate per coin
+            - timeframe - estimate of hours to wait for trade to complete (0 = immediate trade)
 
         """
         request_data = {'cointype':cointype, 'amount':amount}
