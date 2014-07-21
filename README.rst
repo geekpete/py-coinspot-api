@@ -17,7 +17,7 @@ Installation
 
 ::
 
-    pip install py-coinspot-api
+    pip install py-coinspot-api --user
 
 or
 
