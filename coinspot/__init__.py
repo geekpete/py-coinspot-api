@@ -40,14 +40,14 @@ class Coinspot:
         self.api_secret = api_secret
         self.endpoint = endpoint
 
-    def get_signed_request(self, data):
+    def _get_signed_request(self, data):
         return hmac.new(self.api_secret, data, hashlib.sha512).hexdigest()
 
-    def request(self, path, postdata):
+    def _request(self, path, postdata):
         nonce = int(time())
         postdata['nonce'] = nonce
         params = json.dumps(postdata, separators=(',', ':'))
-        signedMessage = self.get_signed_request(params)
+        signedMessage = self._get_signed_request(params)
         headers = {}
         headers['Content-type'] = 'application/json'
         headers['Accept'] = 'text/plain'
@@ -79,7 +79,7 @@ class Coinspot:
 
         """
         request_data = {'cointype':cointype, 'address':address, 'amount':amount}
-        return self.request('/api/my/coin/send', request_data)
+        return self._request('/api/my/coin/send', request_data)
 
     def coindeposit(self, cointype):
         """
@@ -93,7 +93,7 @@ class Coinspot:
 
         """
         request_data = {'cointype':cointype}
-        return self.request('/api/my/coin/deposit', request_data)
+        return self._request('/api/my/coin/deposit', request_data)
 
     def quotebuy(self, cointype, amount):
         """
@@ -112,7 +112,7 @@ class Coinspot:
 
         """
         request_data = {'cointype':cointype, 'amount':amount}
-        return self.request('/api/quote/buy', request_data)
+        return self._request('/api/quote/buy', request_data)
 
     def quotesell(self, cointype, amount):
         """
@@ -131,7 +131,7 @@ class Coinspot:
 
         """
         request_data = {'cointype':cointype, 'amount':amount}
-        return self.request('/api/quote/sell', request_data)
+        return self._request('/api/quote/sell', request_data)
 
 
     def spot(self):
@@ -143,7 +143,7 @@ class Coinspot:
             spot  - a list of the current spot price for each coin type
 
         """
-        return self.request('/api/spot', {})
+        return self._request('/api/spot', {})
 
     def balances(self):
         """
@@ -154,7 +154,7 @@ class Coinspot:
             balances - object containing one property for each coin with your balance for that coin.
 
         """
-        return self.request('/api/my/balances', {})
+        return self._request('/api/my/balances', {})
 
     def orderhistory(self, cointype):
         """
@@ -168,7 +168,7 @@ class Coinspot:
 
         """
         request_data = {'cointype':cointype}
-        return self.request('/api/orders/history', request_data)
+        return self._request('/api/orders/history', request_data)
 
     def orders(self, cointype):
         """
@@ -183,7 +183,7 @@ class Coinspot:
 
         """
         request_data = {'cointype':cointype}
-        return self.request('/api/orders', request_data)
+        return self._request('/api/orders', request_data)
 
     def myorders(self):
         """
@@ -195,7 +195,7 @@ class Coinspot:
             sellorders - array containing all your sell orders
 
         """
-        return self.request('/api/my/orders', {})
+        return self._request('/api/my/orders', {})
 
     def buy(self, cointype, amount, rate):
         """
@@ -212,7 +212,7 @@ class Coinspot:
 
         """
         request_data = {'cointype':cointype, 'amount':amount, 'rate':rate}
-        return self.request('/api/my/buy', request_data)
+        return self._request('/api/my/buy', request_data)
 
     def sell(self, cointype, amount, rate):
         """
@@ -229,4 +229,4 @@ class Coinspot:
 
         """
         request_data = {'cointype':cointype, 'amount':amount, 'rate':rate}
-        self.request('/api/my/sell', request_data)
+        self._request('/api/my/sell', request_data)
