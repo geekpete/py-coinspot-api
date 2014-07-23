@@ -1,6 +1,6 @@
 #!/usr/bin/python
 __author__ = 'Peter Dyson <pete@geekpete.com>'
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 __license__ = 'GPLv3'
 __source__ = 'http://github.com/geekpete/py-coinspot-api/coinspot.py'
 

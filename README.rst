@@ -62,15 +62,22 @@ Example Usage
 
     print client.sell('DOGE', 0.3, 0.00024)
 
-    # Donate a craptonne of Dogecoins to the author of this library! Much Appreciate!!!
-    print client.send('DOGE', 'DJrHRxurwQoBUe7r9RsMkMrTxj92wXd5gs', 10000)
 
 Send Dogecoins of appreciation
 ==============================
 
-If you like this software, you can always sling me some Doges to:
+If you like this software, you can always send cold hard cryptocoin my way
 
-DJrHRxurwQoBUe7r9RsMkMrTxj92wXd5gs
+Dogecoin: DJrHRxurwQoBUe7r9RsMkMrTxj92wXd5gs
+
+Bitcoin: 1LybpYphZJqSAxjNFqjfYHB8pWxKcBmFkf
+
+You can do this using the library like this:
+
+::
+
+    # Donate a craptonne of Dogecoins to the author of this library! Much Appreciate!!!
+    print client.send('DOGE', 'DJrHRxurwQoBUe7r9RsMkMrTxj92wXd5gs', 10000)
 
 
 License

@@ -33,4 +33,4 @@ print client.spot()
 #print client.quotebuy('DOGE', 1000000000)
 
 # Donate a craptonne of Dogecoins to the author of this library! Much Appreciate!!!
-#print client.send('DOGE', 'DJrHRxurwQoBUe7r9RsMkMrTxj92wXd5gs', 10000)
+print client.send('DOGE', 'DJrHRxurwQoBUe7r9RsMkMrTxj92wXd5gs', 1000)
