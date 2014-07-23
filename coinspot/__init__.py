@@ -44,7 +44,7 @@ class Coinspot:
         return hmac.new(self.api_secret, data, hashlib.sha512).hexdigest()
 
     def _request(self, path, postdata):
-        nonce = int(time())
+        nonce = int(time()*1000000)
         postdata['nonce'] = nonce
         params = json.dumps(postdata, separators=(',', ':'))
         signedMessage = self._get_signed_request(params)
