@@ -1,6 +1,8 @@
 Python Coinspot API Library
 ===========================
 
+[![Build Status](https://travis-ci.org/monk-ee/py-coinspot-api.png?branch=master)](https://travis-ci.org/monk-ee/py-coinspot-api)
+
 A python library for the Coinspot API.
 
 Copyright (C) 2014 Peter Dyson pete@geekpete.com
