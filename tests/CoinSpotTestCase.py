@@ -18,13 +18,13 @@ import fixtures
 
 class CoinSpotTestCase(unittest.TestCase):
     def setUp(self):
-        self._coinspot = CoinSpot()
+        self._coinspot = CoinSpot(run=False)
 
     def tearDown(self):
         pass
 
     #@patch('CoinSpot._request')
-    def test_get_spot(self, get):
+    def test_get_spot(self):
         #get.side_effect = helpers.mock_api_request
         #resp = self._coinspot.spot()
         pass

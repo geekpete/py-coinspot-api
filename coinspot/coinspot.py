@@ -40,12 +40,13 @@ class CoinSpot:
     """
     coinspot class implementing API calls for the coinspot API
     """
-    def __init__(self):
+    def __init__(self, run=True):
         self.timestamp = strftime("%d/%m/%Y %H:%M:%S")
-        self.load_config()
-        self.api_key = self.config['api']['key']
-        self.api_secret = self.config['api']['secret']
-        self.endpoint = self.config['api']['endpoint']
+        if run:
+            self.load_config()
+            self.api_key = self.config['api']['key']
+            self.api_secret = self.config['api']['secret']
+            self.endpoint = self.config['api']['endpoint']
 
     def load_config(self):
         try:
