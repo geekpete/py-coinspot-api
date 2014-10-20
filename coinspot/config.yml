@@ -1,5 +1,0 @@
-api:
- key: '17c4b65d710c22932816d70f02b5f8a3'
- secret: '8H9BW14YJTDJ7RRCX8TFRZL422YRYXZMKEQCD1VRFB2ANVMYL4TAC0Y69ZU5GRU21PAKFPCEU24NQNM7M'
- endpoint: 'www.coinspot.com.au'
-logfile: 'coinspot.log'
