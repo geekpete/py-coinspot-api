@@ -3,19 +3,17 @@
 
 """__init__.py: Init for unit testing this module."""
 
-__author__ = "monkee"
-__license__ = "GPL"
-__version__ = "0.0.1"
-__maintainer__ = "monk-ee"
-__email__ = "magic.monkee.magic@gmail.com"
-__status__ = "Development"
+__author__ = 'Peter Dyson <pete@geekpete.com>'
+__version__ = '0.2.1'
+__license__ = 'GPLv3'
+__source__ = 'http://github.com/geekpete/py-coinspot-api/coinspot.py'
 
 import unittest
 
-from coinspot.tests.coinspotTestCase import TheStretcherTestCase
+from coinspot.tests.CoinSpotTestCase import CoinSpotTestCase
 
 
 def all_tests():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TheStretcherTestCase))
+    suite.addTest(unittest.makeSuite(CoinSpotTestCase))
     return suite
