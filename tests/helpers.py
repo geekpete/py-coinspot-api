@@ -7,9 +7,12 @@ __source__ = 'http://github.com/geekpete/py-coinspot-api/coinspot.py'
 
 """helpers.py: These are helper mock functions for testing this module."""
 
-from coinspot.tests import fixtures
-from mock import Mock
 import json
+
+from mock import Mock
+
+from tests import fixtures
+
 
 def mock_api_request(host_url=None, path=None, *args, **kwargs):
     resp = Mock()
