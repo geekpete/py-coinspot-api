@@ -3,7 +3,9 @@ Python Coinspot API Library
 
 [![Build Status](https://travis-ci.org/monk-ee/py-coinspot-api.png?branch=master)](https://travis-ci.org/monk-ee/py-coinspot-api)
 
+
 A python library for the Coinspot API.
+
 
 Copyright (C) 2014 Peter Dyson pete@geekpete.com
 
@@ -37,9 +39,13 @@ Configuration
 The config.yml.sample needs to be copied to config.yml and your unique api key and secret values need to be inserted.
 
     api:
+
      key: 'PUT_YOUR_KEY_HERE'
+
      secret: 'PUT_YOUR_SECRET_HERE'
+
      endpoint: 'www.coinspot.com.au'
+
     logfile: 'coinspot.log'
 
 
@@ -109,5 +115,6 @@ Public License for more details.
 
 Change Log
 ==========
-0.1.1 Initial Release
-0.2.0 Logging Support, Initial Test Cases, Exception Handling, Travis Support, Configuration File
+
+-    0.1.1 Initial Release
+-    0.2.0 Logging Support, Initial Test Cases, Exception Handling, Travis Support, Configuration File
