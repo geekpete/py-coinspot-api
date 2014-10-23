@@ -19,7 +19,7 @@ import helpers
 
 class CoinSpotTestCase(unittest.TestCase):
     def setUp(self):
-        self._coinspot = CoinSpot(run=False)
+        self._coinspot = CoinSpot()
 
     def tearDown(self):
         pass
