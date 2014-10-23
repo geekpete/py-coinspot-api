@@ -35,6 +35,24 @@ or
 
 Configuration
 =============
+You have two options for configuration, using os environment variables or a yaml file
+
+
+Option 1
+========
+
+Windows:
+set COINSPOT_API_KEY=XXXXXX
+set COINSPOT_API_SECRET=XXXXXXXXXX
+
+Linux:
+export COINSPOT_API_KEY=XXXXXX
+export COINSPOT_API_SECRET=XXXXXXXXXX
+
+
+
+Option 2
+========
 
 The config.yml.sample needs to be copied to config.yml and your unique api key and secret values need to be inserted.
 

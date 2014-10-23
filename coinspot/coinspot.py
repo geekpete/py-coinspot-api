@@ -38,24 +38,59 @@ from time import time, strftime
 
 class CoinSpot:
     """
+    set some defaults
+    """
+    api_key = ""
+    api_secret = ""
+    endpoint = "www.coinspot.com.au"
+    logging = "coinspot.log"
+
+    """
     coinspot class implementing API calls for the coinspot API
     """
-    def __init__(self, run=True):
+    def __init__(self):
         self.timestamp = strftime("%d/%m/%Y %H:%M:%S")
-        if run:
-            self.load_config()
+        self.loader()
+        self.start_logging()
+
+    def loader(self):
+        """
+        Step 1 First we look for globals in the form:
+         COINSPOT_API_KEY
+         COINSPOT_SECRET_KEY
+        """
+        try:
+            self.api_key = os.environ['COINSPOT_API_KEY']
+            self.api_secret = os.environ['COINSPOT_SECRET_KEY']
+            #ok got enough to run
+            return
+        except:
+            pass
+
+        """
+        Step 2  Second we look for the localest yaml file - closest to executing code
+        """
+        try:
+            self.config = yaml.load(open(os.path.realpath(os.path.dirname(sys.argv[0])) + '/config.yml', 'r'))
+            #these must be set
             self.api_key = self.config['api']['key']
             self.api_secret = self.config['api']['secret']
+            #these are optional  - wrap some code around this
             self.endpoint = self.config['api']['endpoint']
-
-    def load_config(self):
-        try:
-            self.config = yaml.load(open(os.path.dirname(__file__) + '/config.yml', 'r'))
-            logging.basicConfig(filename=os.path.dirname(__file__) + "/" + self.config['logfile'], level=logging.INFO)
+            self.endpoint = self.config['logging']
+            #ok we are good to run
+            return
         except IOError as error:
-            exit("Attempting to load config.yml I/O error({0}): {1}".format(error.errno, error.strerror))
+            pass
         except:
-            raise
+            pass
+
+        """
+        Step 3 Carry on - we dont care if there is no config file - we might be testing
+        """
+
+    def start_logging(self):
+        logging.basicConfig(filename=os.path.realpath(os.path.dirname(sys.argv[0])) + "/" + self.logging, level=logging.INFO)
 
     def _get_signed_request(self, data):
         return hmac.new(self.api_secret, data, hashlib.sha512).hexdigest()
