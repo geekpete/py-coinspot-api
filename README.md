@@ -1,7 +1,11 @@
 Python Coinspot API Library
 ===========================
 
+[![Build Status](https://travis-ci.org/monk-ee/py-coinspot-api.png?branch=master)](https://travis-ci.org/monk-ee/py-coinspot-api)
+
+
 A python library for the Coinspot API.
+
 
 Copyright (C) 2014 Peter Dyson pete@geekpete.com
 
@@ -29,6 +33,22 @@ or
     sudo pip install py-coinspot-api
 
 
+Configuration
+=============
+
+The config.yml.sample needs to be copied to config.yml and your unique api key and secret values need to be inserted.
+
+    api:
+
+     key: 'PUT_YOUR_KEY_HERE'
+
+     secret: 'PUT_YOUR_SECRET_HERE'
+
+     endpoint: 'www.coinspot.com.au'
+
+    logfile: 'coinspot.log'
+
+
 Class Documentation
 ===================
 
@@ -37,7 +57,8 @@ http://py-coinspot-api.readthedocs.org/en/latest/
 TODO
 ====
 
--  Add exception handling.
+-  Extend test cases and requirements.
+-  Rebuild the docs.
 
 
 Example Usage
@@ -47,10 +68,8 @@ Example Usage
 
     from coinspot import Coinspot
 
-    api_key = 'xxxxx'
-    api_secret = 'yyyyyyyyyyyyyyy'
 
-    client = Coinspot(api_key, api_secret)
+    client = Coinspot()
 
     print client.orders('LTC')
 
@@ -92,3 +111,10 @@ This program is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 Public License for more details.
+
+
+Change Log
+==========
+
+-    0.1.1 Initial Release
+-    0.2.0 Logging Support, Initial Test Cases, Exception Handling, Travis Support, Configuration File

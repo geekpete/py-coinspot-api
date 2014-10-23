@@ -1,0 +1,5 @@
+hmac==20101005
+hashlib==20081119
+simplejson==3.5.3
+PyYAML==3.11
+mock==1.0.1

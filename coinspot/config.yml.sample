@@ -1,0 +1,5 @@
+api:
+ key: ''
+ secret: ''
+ endpoint: 'www.coinspot.com.au'
+logfile: 'coinspot.log'
