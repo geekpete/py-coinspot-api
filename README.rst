@@ -35,6 +35,9 @@ or
 Configuration
 =============
 
+The library requires credentials to access the API.
+These can be stored in your script or for more separation in a YAML config file.
+
 The config.yml.sample needs to be copied to config.yml and your unique
 api key and secret values need to be inserted.
 
@@ -45,6 +48,16 @@ api key and secret values need to be inserted.
     secret: 'PUT_YOUR_SECRET_HERE'
     endpoint: 'www.coinspot.com.au'
   logfile: 'coinspot.log'
+
+Your python program would then be configured to load the YAML config file on start up,
+to get the credentials to provide to the library without the credentials being hard coded
+in your script.
+
+For example::
+
+  #!/usr/bin/env python
+
+
 
 Class Documentation
 ===================
@@ -63,8 +76,8 @@ Example Usage
 
     from coinspot import CoinSpot
     
-    # initialise the library client
-    client = CoinSpot()
+    # initialise the library with credentials
+    client = CoinSpot(api_key="YOUR_API_KEY", api_secret="YOUR_API_SECRET")
 
     # get the spot prices
     print client.spot()
@@ -130,7 +143,7 @@ Change Log
 
 -  0.1.1 Initial Release
 -  0.2.2 Logging Support, Initial Test Cases, Exception Handling, Travis
-   Support, Configuration File
+   Support, Configuration File Example
 
 .. |Build Status| image:: https://travis-ci.org/monk-ee/py-coinspot-api.png?branch=master
    :target: https://travis-ci.org/monk-ee/py-coinspot-api

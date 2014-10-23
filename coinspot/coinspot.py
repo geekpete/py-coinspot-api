@@ -40,22 +40,11 @@ class CoinSpot:
     """
     coinspot class implementing API calls for the coinspot API
     """
-    def __init__(self, run=True):
+    def __init__(self, api_key, api_secret, endpoint='www.coinspot.com.au'):
         self.timestamp = strftime("%d/%m/%Y %H:%M:%S")
-        if run:
-            self.load_config()
-            self.api_key = self.config['api']['key']
-            self.api_secret = self.config['api']['secret']
-            self.endpoint = self.config['api']['endpoint']
-
-    def load_config(self):
-        try:
-            self.config = yaml.load(open(os.path.dirname(__file__) + '/config.yml', 'r'))
-            logging.basicConfig(filename=os.path.dirname(__file__) + "/" + self.config['logfile'], level=logging.INFO)
-        except IOError as error:
-            exit("Attempting to load config.yml I/O error({0}): {1}".format(error.errno, error.strerror))
-        except:
-            raise
+        self.api_key = api_key
+        self.api_secret = api_secret
+        self.endpoint = endpoint
 
     def _get_signed_request(self, data):
         return hmac.new(self.api_secret, data, hashlib.sha512).hexdigest()
