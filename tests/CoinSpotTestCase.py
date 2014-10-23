@@ -12,8 +12,9 @@ __source__ = 'http://github.com/geekpete/py-coinspot-api/coinspot.py'
 import unittest
 from coinspot import CoinSpot
 from mock import patch
+import json
+
 import helpers
-import fixtures
 
 
 class CoinSpotTestCase(unittest.TestCase):
@@ -23,8 +24,21 @@ class CoinSpotTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
-    #@patch('CoinSpot._request')
-    def test_get_spot(self):
-        #get.side_effect = helpers.mock_api_request
-        #resp = self._coinspot.spot()
-        pass
+    @patch('coinspot.CoinSpot._request')
+    def test_get_spot(self, get):
+        get.side_effect = helpers.mock_api_request
+        resp = self._coinspot.spot()
+        data = json.loads(resp.content)
+        self.assertTrue(data.has_key('status'))
+        self.assertEqual(data.get('status'), 'ok')
+        self.assertTrue(data.has_key('spot'))
+
+    @patch('coinspot.CoinSpot._request')
+    def test_get_quotebuy(self, get):
+        get.side_effect = helpers.mock_api_request
+        resp = self._coinspot.quotebuy("DOGE", 100)
+        data = json.loads(resp.content)
+        self.assertTrue(data.has_key('status'))
+        self.assertEqual(data.get('status'), 'ok')
+        self.assertTrue(data.has_key('quote'))
+        self.assertTrue(data.has_key('timeframe'))
