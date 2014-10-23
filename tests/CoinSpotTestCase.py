@@ -42,3 +42,21 @@ class CoinSpotTestCase(unittest.TestCase):
         self.assertEqual(data.get('status'), 'ok')
         self.assertTrue(data.has_key('quote'))
         self.assertTrue(data.has_key('timeframe'))
+
+    @patch('coinspot.CoinSpot._request')
+    def test_get_balances(self, get):
+        get.side_effect = helpers.mock_api_request
+        resp = self._coinspot.balances()
+        data = json.loads(resp.content)
+        self.assertTrue(data.has_key('status'))
+        self.assertEqual(data.get('status'), 'ok')
+        self.assertTrue(data.has_key('balance'))
+
+    @patch('coinspot.CoinSpot._request')
+    def test_get_orderhistory(self, get):
+        get.side_effect = helpers.mock_api_request
+        resp = self._coinspot.orderhistory('DOGE')
+        data = json.loads(resp.content)
+        self.assertTrue(data.has_key('status'))
+        self.assertEqual(data.get('status'), 'ok')
+        self.assertTrue(data.has_key('orders'))
