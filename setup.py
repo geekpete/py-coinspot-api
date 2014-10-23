@@ -4,6 +4,11 @@ from os import path
 
 here = path.abspath(path.dirname(__file__))
 
+
+def readme():
+    with open('README.rst') as f:
+        return f.read()
+
 setup(
     name='py-coinspot-api',
 
@@ -13,7 +18,7 @@ setup(
     version='0.2.2',
 
     description='A python library for the Coinspot API',
-    long_description=read('README.rst'),
+    long_description=readme(),
 
     # The project's main homepage.
     url='https://github.com/geekpete/py-coinspot-api',
