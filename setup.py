@@ -10,10 +10,11 @@ setup(
     # Versions should comply with PEP440. For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # http://packaging.python.org/en/latest/tutorial.html#version
-    version='0.2.0',
+    version='0.2.2',
 
     description='A python library for the Coinspot API',
-    long_description='py-coinspot-api is a library to interface with the Coinspot cryptocurrency trading API.',
+    long_description=read('README.rst'),
+    long_description='py-coinspot-api is a library to interface with the Coinspot cryptocurrency trading API.i',
 
     # The project's main homepage.
     url='https://github.com/geekpete/py-coinspot-api',
@@ -31,7 +32,7 @@ setup(
         # 3 - Alpha
         # 4 - Beta
         # 5 - Production/Stable
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
 
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
