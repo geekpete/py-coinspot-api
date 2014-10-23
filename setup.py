@@ -14,7 +14,6 @@ setup(
 
     description='A python library for the Coinspot API',
     long_description=read('README.rst'),
-    long_description='py-coinspot-api is a library to interface with the Coinspot cryptocurrency trading API.i',
 
     # The project's main homepage.
     url='https://github.com/geekpete/py-coinspot-api',
