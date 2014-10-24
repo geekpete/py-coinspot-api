@@ -2,4 +2,5 @@ api:
  key: ''
  secret: ''
  endpoint: 'www.coinspot.com.au'
+debug: False
 logfile: 'coinspot.log'
