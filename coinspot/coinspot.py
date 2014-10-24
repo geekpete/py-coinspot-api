@@ -112,7 +112,8 @@ class CoinSpot:
         if self._debug:
             logging.warning(self.timestamp + " " + str(headers))
         conn = httplib.HTTPSConnection(self._endpoint)
-        #conn.set_debuglevel(1)
+        if self._debug:
+            conn.set_debuglevel(1)
         response_data = '{"status":"invalid","error": "Did not make request"}'
         try:
             conn.request("POST", path, params, headers)
