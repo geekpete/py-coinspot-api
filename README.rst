@@ -154,7 +154,7 @@ Change Log
 ==========
 
 -  0.1.1 Initial Release
--  0.2.0 Logging Support, Initial Test Cases, Exception Handling, Travis
+-  0.2.2 Logging Support, Initial Test Cases, Exception Handling, Travis
    Support, Configuration File
 
 .. |Build Status| image:: https://api.travis-ci.org/geekpete/py-coinspot-api.png?branch=master
