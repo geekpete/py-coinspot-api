@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 __author__ = 'Peter Dyson <pete@geekpete.com>'
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 __license__ = 'GPLv3'
 __source__ = 'http://github.com/geekpete/py-coinspot-api/coinspot.py'
 

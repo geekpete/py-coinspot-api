@@ -8,7 +8,7 @@ from coinspot import CoinSpot
 
 
 # initialise the library client
-client = CoinSpot(api_key="YOUR_API_KEY", api_secret="YOUR_API_SECRET")
+client = CoinSpot()
 
 # get the spot prices
 print client.spot()
