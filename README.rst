@@ -3,13 +3,13 @@ Python Coinspot API Library
 
 |Build Status|
 
-A python library for the Coinspot cryptocurrency trading API.
+A python library for the Coinspot API.
 
 Copyright (C) 2014 Peter Dyson pete@geekpete.com
 
 Source: http://github.com/geekpete/py-coinspot-api
 
-PyPi Package: https://pypi.python.org/pypi/py-coinspot-api/
+PyPi: https://pypi.python.org/pypi/py-coinspot-api/
 
 Please see https://www.coinspot.com.au/api for documentation on the
 CoinSpot API.
@@ -18,46 +18,55 @@ CoinSpot API.
 
 Installation
 ============
-Install with pip via
 
 ::
 
-    
-      pip install py-coinspot-api --user
+    pip install py-coinspot-api --user
 
 or
 
 ::
 
-      
-      sudo pip install py-coinspot-api
-      
+    sudo pip install py-coinspot-api
+
 Configuration
 =============
 
-The library requires credentials to access the API.
-These can be stored in your script or for more separation in a YAML config file.
+You have two options for configuration, using os environment variables
+or a yaml file
 
-The config.yml.sample needs to be copied to config.yml and your unique
-api key and secret values need to be inserted.
+Option 1
+========
+
+Windows:
 
 ::
 
-  api:
-    key: 'PUT_YOUR_KEY_HERE'
-    secret: 'PUT_YOUR_SECRET_HERE'
-    endpoint: 'www.coinspot.com.au'
-  logfile: 'coinspot.log'
+    set COINSPOT_API_KEY=XXXXXX
+    set COINSPOT_API_SECRET=XXXXXXXXXX
 
-Your python program would then be configured to load the YAML config file on start up,
-to get the credentials to provide to the library without the credentials being hard coded
-in your script.
+Linux:
 
-For example::
+::
 
-  #!/usr/bin/env python
+    export COINSPOT_API_KEY=XXXXXX
+    export COINSPOT_API_SECRET=XXXXXXXXXX
 
+Option 2
+========
 
+The config.yml.sample needs to be copied to config.yml and your unique
+api key and secret values need to be inserted. Extra options like debug
+and logging file name can only be configured using the yaml file.
+
+::
+
+    api:
+     key: 'PUT_YOUR_KEY_HERE'
+     secret: 'PUT_YOUR_SECRET_HERE'
+     endpoint: 'www.coinspot.com.au'
+    debug: True
+    logfile: 'coinspot.log'
 
 Class Documentation
 ===================
@@ -72,12 +81,15 @@ TODO
 Example Usage
 =============
 
+After you have your config.yml in place, test it out
+
+
 ::
 
     from coinspot import CoinSpot
-    
-    # initialise the library with credentials
-    client = CoinSpot(api_key="YOUR_API_KEY", api_secret="YOUR_API_SECRET")
+
+    # initialise the library
+    client = CoinSpot()
 
     # get the spot prices
     print client.spot()
@@ -97,7 +109,7 @@ Example Usage
     # Get a quote on buying a billion Dogecoins, with estimation of timeframe
     print client.quotebuy('DOGE', 1000000000)
 
-    # Donate a craptonne of Dogecoins 
+    # Donate a craptonne of Dogecoins
     # to the author of this library! Much Appreciate!!!
     print client.send('DOGE', 'DJrHRxurwQoBUe7r9RsMkMrTxj92wXd5gs', 1000)
 
@@ -115,7 +127,7 @@ way
 You can do this using the library like this:
 ::
 
-    # Donate a craptonne of Dogecoins to the author of this library! 
+    # Donate a craptonne of Dogecoins to the author of this library!
     # Much Appreciate!!!
     print client.send('DOGE', 'DJrHRxurwQoBUe7r9RsMkMrTxj92wXd5gs', 10000)
 
@@ -142,8 +154,8 @@ Change Log
 ==========
 
 -  0.1.1 Initial Release
--  0.2.2 Logging Support, Initial Test Cases, Exception Handling, Travis
-   Support, Configuration File Example
+-  0.2.0 Logging Support, Initial Test Cases, Exception Handling, Travis
+   Support, Configuration File
 
-.. |Build Status| image:: https://travis-ci.org/monk-ee/py-coinspot-api.png?branch=master
-   :target: https://travis-ci.org/monk-ee/py-coinspot-api
+.. |Build Status| image:: https://api.travis-ci.org/geekpete/py-coinspot-api.png?branch=master
+   :target: https://travis-ci.org/geekpete/py-coinspot-api
