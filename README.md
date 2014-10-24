@@ -59,6 +59,7 @@ Option 2
 ========
 
 The config.yml.sample needs to be copied to config.yml and your unique api key and secret values need to be inserted.
+Extra options like debug and logging file name can only be configured using the yaml file.
 
     api:
 
@@ -68,7 +69,10 @@ The config.yml.sample needs to be copied to config.yml and your unique api key a
 
      endpoint: 'www.coinspot.com.au'
 
+    debug: True
+    
     logfile: 'coinspot.log'
+    
 
 
 Class Documentation

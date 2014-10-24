@@ -40,10 +40,11 @@ class CoinSpot:
     """
     set some defaults
     """
-    api_key = ""
-    api_secret = ""
-    endpoint = "www.coinspot.com.au"
-    logging = "coinspot.log"
+    _api_key = ""
+    _api_secret = ""
+    _endpoint = "www.coinspot.com.au"
+    _logging = "coinspot.log"
+    _debug = False
 
     """
     coinspot class implementing API calls for the coinspot API
@@ -51,7 +52,8 @@ class CoinSpot:
     def __init__(self):
         self.timestamp = strftime("%d/%m/%Y %H:%M:%S")
         self.loader()
-        self.start_logging()
+        if self._debug:
+            self.start_logging()
 
     def loader(self):
         """
@@ -60,8 +62,8 @@ class CoinSpot:
          COINSPOT_SECRET_KEY
         """
         try:
-            self.api_key = os.environ['COINSPOT_API_KEY']
-            self.api_secret = os.environ['COINSPOT_SECRET_KEY']
+            self._api_key = os.environ['COINSPOT_API_KEY']
+            self._api_secret = os.environ['COINSPOT_SECRET_KEY']
             #ok got enough to run
             return
         except:
@@ -71,13 +73,14 @@ class CoinSpot:
         Step 2  Second we look for the localest yaml file - closest to executing code
         """
         try:
-            self.config = yaml.load(open(os.path.realpath(os.path.dirname(sys.argv[0])) + '/config.yml', 'r'))
+            config = yaml.load(open(os.path.realpath(os.path.dirname(sys.argv[0])) + '/config.yml', 'r'))
             #these must be set
-            self.api_key = self.config['api']['key']
-            self.api_secret = self.config['api']['secret']
+            self._api_key = config['api']['key']
+            self._api_secret = config['api']['secret']
             #these are optional  - wrap some code around this
-            self.endpoint = self.config['api']['endpoint']
-            self.endpoint = self.config['logging']
+            self._endpoint = config['api']['endpoint']
+            self._logging = config['logfile']
+            self._debug = config['debug']
             #ok we are good to run
             return
         except IOError as error:
@@ -90,10 +93,10 @@ class CoinSpot:
         """
 
     def start_logging(self):
-        logging.basicConfig(filename=os.path.realpath(os.path.dirname(sys.argv[0])) + "/" + self.logging, level=logging.INFO)
+        logging.basicConfig(filename=os.path.realpath(os.path.dirname(sys.argv[0])) + "/" + self._logging, level=logging.DEBUG)
 
     def _get_signed_request(self, data):
-        return hmac.new(self.api_secret, data, hashlib.sha512).hexdigest()
+        return hmac.new(self._api_secret, data, hashlib.sha512).hexdigest()
 
     def _request(self, path, postdata):
         nonce = int(time()*1000000)
@@ -103,23 +106,30 @@ class CoinSpot:
         headers = {}
         headers['Content-type'] = 'application/json'
         headers['Accept'] = 'text/plain'
-        headers['key'] = self.api_key
+        headers['key'] = self._api_key
         headers['sign'] = signedMessage
         headers['User-Agent'] = 'py-coinspot-api/%s (https://github.com/geekpete/py-coinspot-api)' % __version__
-
-        conn = httplib.HTTPSConnection(self.endpoint)
+        if self._debug:
+            logging.warning(self.timestamp + " " + str(headers))
+        conn = httplib.HTTPSConnection(self._endpoint)
         #conn.set_debuglevel(1)
         response_data = '{"status":"invalid","error": "Did not make request"}'
         try:
             conn.request("POST", path, params, headers)
             response = conn.getresponse()
+            if self._debug:
+                logging.warning(self.timestamp + " " + str(response))
+                logging.warning(self.timestamp + " " + str(response.msg))
             #print response.status, response.reason
             response_data = response.read()
+            if self._debug:
+                logging.warning(self.timestamp + " " + str(response_data))
             conn.close()
         except IOError as error:
-            error_text = "Attempting to make request I/O error({0}): {1}".format(error.errno, error.strerror)
-            logging.warning(self.timestamp + " " + error_text)
-            response_data = '{"status":"invalid","error": "' + error_text + '"}'
+            if self._debug:
+                error_text = "Attempting to make request I/O error({0}): {1}".format(error.errno, error.strerror)
+                logging.warning(self.timestamp + " " + error_text)
+                response_data = '{"status":"invalid","error": "' + error_text + '"}'
         except:
             exit("Unexpected error: {0}".format(sys.exc_info()[0]))
 
