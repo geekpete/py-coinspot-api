@@ -49,6 +49,7 @@ class CoinSpot:
     """
     coinspot class implementing API calls for the coinspot API
     """
+
     def __init__(self):
         self.timestamp = strftime("%d/%m/%Y %H:%M:%S")
         self.loader()
