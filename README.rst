@@ -1,7 +1,9 @@
 Python Coinspot API Library
 ===========================
 
-|Build Status|
+.. image:: http://unmaintained.tech/badge.svg
+  :target: http://unmaintained.tech
+  :alt: No Maintenance Intended
 
 A python library for the Coinspot API.
 
