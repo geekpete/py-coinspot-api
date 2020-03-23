@@ -137,6 +137,12 @@ class CoinSpot:
 
         return response_data
 
+    def latestprices(self):
+        """
+        Retreive the latest priaces for each coin
+        """
+        return self._request('/pubapi/latest', {})
+
     def sendcoin(self, cointype, address, amount):
         """
         Send coins
