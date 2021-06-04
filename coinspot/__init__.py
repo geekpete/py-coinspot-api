@@ -1,2 +1,2 @@
-from coinspot import CoinSpot
+from .coinspot import CoinSpot
 

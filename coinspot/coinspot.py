@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-__author__ = 'Peter Dyson <pete@geekpete.com>'
-__version__ = '0.2.2'
-__license__ = 'GPLv3'
-__source__ = 'http://github.com/geekpete/py-coinspot-api/coinspot.py'
+__author__ = "Peter Dyson <pete@geekpete.com>"
+__version__ = "0.3.0"
+__license__ = "GPLv3"
+__source__ = "http://github.com/geekpete/py-coinspot-api/coinspot.py"
 
 """
 coinspot.py - A python library for the Coinspot API.
@@ -27,19 +27,25 @@ GNU General Public License for more details.
 
 import hmac
 import hashlib
-import httplib
+
+try:
+    import httplib
+except:
+    import http.client
 import json
 import yaml
 import os
 import sys
 import logging
 from time import time, strftime
+import requests
 
 
 class CoinSpot:
     """
     set some defaults
     """
+
     _api_key = ""
     _api_secret = ""
     _endpoint = "www.coinspot.com.au"
@@ -63,9 +69,9 @@ class CoinSpot:
          COINSPOT_SECRET_KEY
         """
         try:
-            self._api_key = os.environ['COINSPOT_API_KEY']
-            self._api_secret = os.environ['COINSPOT_SECRET_KEY']
-            #ok got enough to run
+            self._api_key = os.environ["COINSPOT_API_KEY"]
+            self._api_secret = os.environ["COINSPOT_SECRET_KEY"]
+            # ok got enough to run
             return
         except:
             pass
@@ -74,15 +80,21 @@ class CoinSpot:
         Step 2  Second we look for the localest yaml file - closest to executing code
         """
         try:
-            config = yaml.load(open(os.path.realpath(os.path.dirname(sys.argv[0])) + '/config.yml', 'r'))
-            #these must be set
-            self._api_key = config['api']['key']
-            self._api_secret = config['api']['secret']
-            #these are optional  - wrap some code around this
-            self._endpoint = config['api']['endpoint']
-            self._logging = config['logfile']
-            self._debug = config['debug']
-            #ok we are good to run
+            config = yaml.load(
+                open(
+                    os.path.realpath(os.path.dirname(sys.argv[0])) + "/config.yml", "r"
+                ),
+                Loader=yaml.SafeLoader,
+            )
+            # these must be set
+            self._api_key = config["api"]["key"]
+            self._api_secret = config["api"]["secret"]
+            # these are optional  - wrap some code around this
+            self._endpoint = config["api"]["endpoint"]
+            self._logging = config["logfile"]
+            self._debug = config["debug"]
+            # ok we are good to run
+            print(self)
             return
         except IOError as error:
             pass
@@ -94,25 +106,39 @@ class CoinSpot:
         """
 
     def start_logging(self):
-        logging.basicConfig(filename=os.path.realpath(os.path.dirname(sys.argv[0])) + "/" + self._logging, level=logging.DEBUG)
+        logging.basicConfig(
+            filename=os.path.realpath(os.path.dirname(sys.argv[0]))
+            + "/"
+            + self._logging,
+            level=logging.DEBUG,
+        )
 
     def _get_signed_request(self, data):
-        return hmac.new(self._api_secret, data, hashlib.sha512).hexdigest()
+        print(self)
+        # print(hmac.new(key.encode('utf-8'), data.encode('utf-8'), hashlib.sha512).hexdigest()
+        return hmac.new(
+            str((self._api_secret)).encode("utf-8"),
+            data.encode("utf-8"),
+            hashlib.sha512,
+        ).hexdigest()
 
     def _request(self, path, postdata):
-        nonce = int(time()*1000000)
-        postdata['nonce'] = nonce
-        params = json.dumps(postdata, separators=(',', ':'))
+        nonce = int(time() * 1000000)
+        postdata["nonce"] = nonce
+        params = json.dumps(postdata, separators=(",", ":"))
         signedMessage = self._get_signed_request(params)
         headers = {}
-        headers['Content-type'] = 'application/json'
-        headers['Accept'] = 'text/plain'
-        headers['key'] = self._api_key
-        headers['sign'] = signedMessage
-        headers['User-Agent'] = 'py-coinspot-api/%s (https://github.com/geekpete/py-coinspot-api)' % __version__
+        headers["Content-type"] = "application/json"
+        headers["Accept"] = "text/plain"
+        headers["key"] = self._api_key
+        headers["sign"] = signedMessage
+        headers["User-Agent"] = (
+            "py-coinspot-api/%s (https://github.com/geekpete/py-coinspot-api)"
+            % __version__
+        )
         if self._debug:
             logging.warning(self.timestamp + " " + str(headers))
-        conn = httplib.HTTPSConnection(self._endpoint)
+        conn = http.client.HTTPSConnection(self._endpoint)
         if self._debug:
             conn.set_debuglevel(1)
         response_data = '{"status":"invalid","error": "Did not make request"}'
@@ -122,14 +148,16 @@ class CoinSpot:
             if self._debug:
                 logging.warning(self.timestamp + " " + str(response))
                 logging.warning(self.timestamp + " " + str(response.msg))
-            #print response.status, response.reason
+            # print response.status, response.reason
             response_data = response.read()
             if self._debug:
                 logging.warning(self.timestamp + " " + str(response_data))
             conn.close()
         except IOError as error:
             if self._debug:
-                error_text = "Attempting to make request I/O error({0}): {1}".format(error.errno, error.strerror)
+                error_text = "Attempting to make request I/O error({0}): {1}".format(
+                    error.errno, error.strerror
+                )
                 logging.warning(self.timestamp + " " + error_text)
                 response_data = '{"status":"invalid","error": "' + error_text + '"}'
         except:
@@ -151,8 +179,8 @@ class CoinSpot:
             - **status** - ok, error
 
         """
-        request_data = {'cointype':cointype, 'address':address, 'amount':amount}
-        return self._request('/api/my/coin/send', request_data)
+        request_data = {"cointype": cointype, "address": address, "amount": amount}
+        return self._request("/api/my/coin/send", request_data)
 
     def coindeposit(self, cointype):
         """
@@ -165,8 +193,8 @@ class CoinSpot:
             - **address** - your deposit address for the coin
 
         """
-        request_data = {'cointype':cointype}
-        return self._request('/api/my/coin/deposit', request_data)
+        request_data = {"cointype": cointype}
+        return self._request("/api/my/coin/deposit", request_data)
 
     def quotebuy(self, cointype, amount):
         """
@@ -184,8 +212,8 @@ class CoinSpot:
             - **timeframe** - estimate of hours to wait for trade to complete (0 = immediate trade)
 
         """
-        request_data = {'cointype':cointype, 'amount':amount}
-        return self._request('/api/quote/buy', request_data)
+        request_data = {"cointype": cointype, "amount": amount}
+        return self._request("/api/quote/buy", request_data)
 
     def quotesell(self, cointype, amount):
         """
@@ -203,9 +231,8 @@ class CoinSpot:
             - **timeframe** - estimate of hours to wait for trade to complete (0 = immediate trade)
 
         """
-        request_data = {'cointype':cointype, 'amount':amount}
-        return self._request('/api/quote/sell', request_data)
-
+        request_data = {"cointype": cointype, "amount": amount}
+        return self._request("/api/quote/sell", request_data)
 
     def spot(self):
         """
@@ -216,7 +243,7 @@ class CoinSpot:
             - **spot**  - a list of the current spot price for each coin type
 
         """
-        return self._request('/api/spot', {})
+        return self._request("/api/spot", {})
 
     def balances(self):
         """
@@ -227,7 +254,7 @@ class CoinSpot:
             - **balances** - object containing one property for each coin with your balance for that coin.
 
         """
-        return self._request('/api/my/balances', {})
+        return self._request("/api/my/balances", {})
 
     def orderhistory(self, cointype):
         """
@@ -240,8 +267,8 @@ class CoinSpot:
             - **orders** - list of the last 1000 completed orders
 
         """
-        request_data = {'cointype':cointype}
-        return self._request('/api/orders/history', request_data)
+        request_data = {"cointype": cointype}
+        return self._request("/api/orders/history", request_data)
 
     def orders(self, cointype):
         """
@@ -255,8 +282,8 @@ class CoinSpot:
             - **sellorders** - array containing all the open sell orders
 
         """
-        request_data = {'cointype':cointype}
-        return self._request('/api/orders', request_data)
+        request_data = {"cointype": cointype}
+        return self._request("/api/orders", request_data)
 
     def myorders(self):
         """
@@ -268,7 +295,7 @@ class CoinSpot:
             - **sellorders** - array containing all your sell orders
 
         """
-        return self._request('/api/my/orders', {})
+        return self._request("/api/my/orders", {})
 
     def buy(self, cointype, amount, rate):
         """
@@ -284,8 +311,8 @@ class CoinSpot:
             - **status** - ok, error
 
         """
-        request_data = {'cointype':cointype, 'amount':amount, 'rate':rate}
-        return self._request('/api/my/buy', request_data)
+        request_data = {"cointype": cointype, "amount": amount, "rate": rate}
+        return self._request("/api/my/buy", request_data)
 
     def sell(self, cointype, amount, rate):
         """
@@ -301,5 +328,5 @@ class CoinSpot:
             - **status** - ok, error
 
         """
-        request_data = {'cointype':cointype, 'amount':amount, 'rate':rate}
-        self._request('/api/my/sell', request_data)
+        request_data = {"cointype": cointype, "amount": amount, "rate": rate}
+        self._request("/api/my/sell", request_data)
