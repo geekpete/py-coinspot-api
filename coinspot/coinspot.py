@@ -122,7 +122,46 @@ class CoinSpot:
             hashlib.sha512,
         ).hexdigest()
 
-    
+    def _request_public(self, path, postdata):
+        """
+        The public API uses a GET method, while the Private API uses a POST method.
+            _request_public - is for the public API, requires no nonce, key or hash or data.
+        """
+
+        # Create base URL
+        path = self._endpoint + path
+
+        # Add each parameter into the URL
+        for parameter in postdata:
+            path = path + postdata[parameter] + "/"
+
+        # Request
+        response_data = requests.get(path)
+        return response_data
+
+    def _request(self, path, postdata):
+        # Create URL
+        path = self._endpoint + path
+
+        # Post data
+        nonce = int(time() * 1000000)
+        postdata["nonce"] = nonce
+        params = json.dumps(postdata, separators=(",", ":"))
+        signedMessage = self._get_signed_request(params)
+
+        # Header
+        headers = {}
+        headers["Content-type"] = "application/json"
+        headers["Accept"] = "text/plain"
+        headers["key"] = self._api_key
+        headers["sign"] = signedMessage
+
+        # Request
+        response_data = requests.post(path, data=params, headers=headers)
+
+        return response_data
+
+
     def latestprices(self):
         """
         Latest Prices
