@@ -164,3 +164,712 @@ class CoinSpot:
             exit("Unexpected error: {0}".format(sys.exc_info()[0]))
 
         return response_data
+
+    def latestprices(self):
+        """
+        Latest Prices
+
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **prices** - array of objects with one set of properties for each coin with latest buy and sell prices, non aud markets are symbolised by (e.g.) 'btc_usdt'
+
+        """
+        request_data = {}
+        return self._request_public("/pubapi/v2/latest/", request_data)
+
+    def coinprices(self, cointype):
+        """
+        Latest Coin Prices
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **prices** - object with set of properties for coin with latest buy, ask and last prices
+
+        """
+        request_data = {"cointype":cointype}
+        return self._request_public("/pubapi/v2/latest/", request_data)
+
+    def coinmarketprices(self, cointype, markettype):
+        """
+        Latest Coin / Market Prices
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param markettype:
+            market coin short name, example value 'USDT' (only for available markets)
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **prices** - object with set of properties for coin with latest buy, ask and last prices
+
+        """
+        request_data = {"cointype":cointype, "markettype":markettype}
+        return self._request_public("/pubapi/v2/latest/", request_data)
+
+    def buyprice(self, cointype):
+        """
+        Latest Buy Price
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **rate** - latest buy price for that coin
+            - **market** - market coin is trading in
+
+        """
+        request_data = {"cointype":cointype}
+        return self._request_public("/pubapi/v2/buyprice/", request_data)
+
+    def buymarketprice(self, cointype, markettype):
+        """
+        Latest Buy Price / Market
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param markettype:
+            coin market you wish to use to buy it, example value: USDT' (only for available markets)
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **rate** - latest buy price for that coin
+            - **market** - market coin is trading in
+
+        """
+        request_data = {"cointype":cointype, "markettype":markettype}
+        return self._request_public("/pubapi/v2/buyprice/", request_data)
+
+    def sellprice(self, cointype):
+        """
+        Latest Sell Price
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **rate** - latest sell price for that coin
+            - **market** - market coin is trading in
+
+        """
+        request_data = {"cointype":cointype}
+        return self._request_public("/pubapi/v2/sellprice/", request_data)
+
+    def sellmarketprice(self, cointype, markettype):
+        """
+        Latest Sell Price / Market
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param markettype:
+            coin market you wish to sell it for, example value: 'USDT' (note: only for available markets)
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **rate** - latest sell price for that coin
+            - **market** - market coin is trading in
+
+        """
+        request_data = {"cointype":cointype, "markettype":markettype}
+        return self._request_public("/pubapi/v2/sellprice/", request_data)
+
+    def openorders(self, cointype):
+        """
+        Open Orders By Coin
+
+        :param cointype:
+            the coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **buyorders** - list of top 100 open AUD buy orders for the given coin
+            - **sellorders** - list of top 100 open AUD sell orders for the given coin
+
+        """
+        request_data = {"cointype":cointype}
+        return self._request_public("/pubapi/v2/orders/open/", request_data)
+
+    def openmarketorders(self, cointype, markettype):
+        """
+        Open Orders By Coin / Market
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param markettype:
+            coin market, example values 'USDT' (note: only for available markets)
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **buyorders** - list of top 20 open buy order rates for the given coin / market
+            - **sellorders** - list of top 20 open sell order rates for the given coin / market
+
+        """
+        request_data = {"cointype":cointype, "markettype":markettype}
+        return self._request_public("/pubapi/v2/orders/open/", request_data)
+
+    def completedorders(self, cointype):
+        """
+        Completed Orders By Coin
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **buyorders** - list of top 100 completed AUD buy orders for the given coin
+            - **sellorders** - list of top 100 completed AUD sell orders for the given coin
+
+        """
+        request_data = {"cointype":cointype}
+        return self._request_public("/pubapi/v2/orders/completed/", request_data)
+
+    def completedmarketorders(self, cointype, markettype):
+        """
+        Completed Orders By Coin / Market
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param markettype:
+            coin market, example values 'USDT' (note: only for available markets)
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **buyorders** - list of top 100 completed buy orders for the given coin / market
+            - **sellorders** - list of top 100 completed sell orders for the given coin / market
+
+        """
+        request_data = {"cointype":cointype, "markettype":markettype}
+        return self._request_public("/pubapi/v2/orders/completed/", request_data)
+
+    def statuscheck(self):
+        """
+        Full Access Status Check
+
+        :return:
+            - **status** - ok
+
+        """
+        request_data = {}
+        return self._request("/api/v2/status/", request_data)
+
+    def depositaddress(self, cointype):
+        """
+        My Coin Deposit Address
+
+        :param cointype:
+            short name, example value 'BTC', 'LTC', 'DOGE'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **networks** - list of available networks (fields below)
+
+        """
+        request_data = {"cointype":cointype}
+        return self._request("/api/v2/my/coin/deposit/", request_data)
+
+    def buynowquote(self, cointype, amount, amounttype):
+        """
+        Buy Now Quote
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param amount:
+            amount to buy
+        :param amounttype:
+            'coin' or 'aud' - whether the amount above is coin amount or AUD amount
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **rate** - rate per specified coin
+
+        """
+        request_data = {"cointype":cointype, "amount":amount, "amounttype":amounttype}
+        return self._request("/api/v2/quote/buy/now/", request_data)
+
+    def sellnowquote(self, cointype, amount, amounttype):
+        """
+        Sell Now Quote
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param amount:
+            amount of coins to sell
+        :param amounttype:
+            'coin' or 'aud' - whether the amount below is coin amount or AUD amount
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **rate** - rate per specified coin inclusive of fee
+
+        """
+        request_data = {"cointype":cointype, "amount":amount, "amounttype":amounttype}
+        return self._request("/api/v2/quote/sell/now/", request_data)
+
+    def swapnowquote(self, cointypesell, cointypebuy, amount):
+        """
+        Swap Now Quote
+
+        :param cointypesell:
+            coin short name you would like to swap, example value 'BTC', 'LTC', 'DOGE'
+        :param cointypebuy:
+            coin short name you wuld like to swap it for, example value 'BTC', 'LTC', 'DOGE'
+        :param amount:
+            amount of coins to swap
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **rate** - rate per coin swapped exclusive of fee
+
+        """
+        request_data = {"cointypesell":cointypesell, "cointypebuy":cointypebuy, "amount":amount}
+        return self._request("/api/v2/quote/swap/now/", request_data)
+
+    def buymarket(self, cointype, amount, rate, markettype):
+        """
+        Place Markey Buy Order
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param amount:
+            mount of coins you want to buy, max precision 8 decimal places
+        :param rate:
+            rate in market currency (e.g. AUD or USDT) you are willing to pay, max precision 8 decimal places
+        :param markettype:
+            (optional, available markets only, default 'AUD') market coin short name to use to buy the coin, example value 'USDT'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **coin** - coin short name, example value 'BTC', 'LTC', 'DOGE'
+            - **market** - market used to place buy order for the coin
+            - **amount** - coin amount that was placed
+            - **rate** - rate that order was placed at
+            - **id** - id of buy order created which can be used to cancel the order if desired
+
+        """
+        request_data = {"cointype":cointype, "amount":amount, "rate":rate, "markettype":markettype}
+        return self._request("/api/v2/my/buy/", request_data)
+
+    def buynow(self, cointype, amounttype, amount):
+        """
+        Place Buy Now Order
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param amounttype:
+            'coin' or 'aud' - whether the amount below is coin amount or AUD amount
+        :param amount:
+            amount to buy, max precision for coin is 8 decimal places and 2 decimal places for AUD
+        :param rate:
+            (optional) rate in AUD received from using Buy Now Quote or otherwise
+        :param threshold:
+            (optional) 0 to 1000 - buy request will terminate if not within percentage threshold for current rate to vary from submitted rate, max precision for percentage is 8 decimal places
+        :param direction:
+            (optional) UP, DOWN, or BOTH (default is UP) - direction the price has moved for the percentage threshold to apply
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **coin** - coin short name, example value 'BTC', 'LTC', 'DOGE'
+            - **market** - market used to place buy order for the coin
+            - **amount** - amount that was bought
+            - **total** - total amount in market currency
+
+        """
+        request_data = {"cointype":cointype, "amounttype":amounttype, "amount":amount}
+        return self._request("/api/v2/my/buy/now/", request_data)
+
+    def sellmarket(self, cointype, amount, rate, markettype):
+        """
+        Place Market Sell Order
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param amount:
+            amount of coins you want to sell, max precision 8 decimal places
+        :param rate:
+            rate in AUD you are willing to sell for, max precision 8 decimal places
+        :param markettype:
+            (optional, available markets only, default 'AUD') market coin short name to use to sell the coin into, example value 'USDT'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **coin** - coin short name
+            - **market** - market used to place sell order for the coin
+            - **amount** - coin amount that was placed in order
+            - **rate** - rate that order was placed at
+            - **id** - id of sell order created which can be used to cancel the order if desired
+
+        """
+        request_data = {"cointype":cointype, "amount":amount, "rate":rate, "markettype":markettype}
+        return self._request("/api/v2/my/sell/", request_data)
+
+    def sellnow(self, cointype, amounttype, amount):
+        """
+        Place Sell Now Order
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param amounttype:
+            'coin' or 'aud' - whether the amount below is coin amount or AUD amount
+        :param amount:
+            amount of coins you want to sell, max precision 8 decimal places
+        :param rate:
+            (optional) rate in AUD received from using Sell Now Quote or otherwise
+        :param threshold:
+            (optional) 0 to 1000 - sell request will terminate if not within percentage threshold for current rate to vary from submitted rate, max precision for percentage is 8 decimal places
+        :param direction:
+            (optional) UP, DOWN, or BOTH (default is DOWN) - direction the price has moved for the percentage threshold to apply
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **coin** - coin short name, example value 'BTC', 'LTC', 'DOGE'
+            - **market** - market used to place sell order for the coin
+            - **amount** - amount that was sold
+            - **rate** - rate that order was placed at
+            - **total** - total amount in market currency
+
+        """
+        request_data = {"cointype":cointype, "amounttype":amounttype, "amount":amount}
+        return self._request("/api/v2/my/sell/now/", request_data)
+
+    def swapnow(self, cointypesell, cointypebuy, amount):
+        """
+        Place Swap Now Order
+
+        :param cointypesell:
+            coin short name you would like to swap, example value 'BTC', 'LTC', 'DOGE'
+        :param cointypebuy:
+            coin short name you wuld like to swap it for, example value 'BTC', 'LTC', 'DOGE'
+        :param amount:
+            amount of (cointypesell) to swap, max precision for coin is 8 decimal places
+        :param rate:
+            (optional) rate received from using Swap Now Quote or otherwise
+        :param threshold:
+            (optional) 0 to 1000 - Swap request will terminate if not within percentage threshold for current rate to vary from submitted rate, max precision for percentage is 8 decimal places
+        :param direction:
+            (optional) UP, DOWN, or BOTH (default is DOWN) - direction the price has moved for the percentage threshold to apply
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **coin** - coin short name, example value 'BTC', 'LTC', 'DOGE'
+            - **market** - coin swapped and and coin it was swapped for
+            - **amount** - coin amount that was swapped
+            - **rate** - rate that order was placed at
+            - **total** - total amount in swapped coin currency
+
+        """
+        request_data = {"cointypesell":cointypesell, "cointypebuy":cointypebuy, "amount":amount}
+        return self._request("/api/v2/my/swap/now/", request_data)
+
+    def cancelbuy(self, id):
+        """
+        Cancel My Buy Order
+
+        :param id:
+            id of the buy order to cancel
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+
+        """
+        request_data = {"id":id}
+        return self._request("/api/v2/my/buy/cancel/", request_data)
+
+    def cancelsell(self, id):
+        """
+        Cancel My Sell Order
+
+        :param id:
+            id of the sell order to cancel
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+
+        """
+        request_data = {"id":id}
+        return self._request("/api/v2/my/sell/cancel/", request_data)
+
+    def withdrawdetails(self, cointype):
+        """
+        Get Coin Withdrawal Details
+
+
+        :param cointype:
+            coin short name you would like to withdraw, example value 'BTC', 'LTC', 'DOGE'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **networks** - list of available send networks
+
+        """
+        request_data = {"cointype":cointype}
+        return self._request("/api/v2/my/coin/withdraw/senddetails/", request_data)
+
+    def withdraw(self, cointype, amount, address):
+        """
+        Coin Withdrawal
+
+        :param cointype:
+            coin short name you would like to withdraw, example values 'BTC', 'LTC', 'DOGE'
+        :param amount:
+            the amount (in coin currency) of coin you would like to withdraw
+        :param address:
+            the destination address for the coin amount'
+        :param emailconfirm:
+            (optional, default is 'NO') if 'YES' an email confirmation will be sent and withdraw will not complete until confirmation link within email is clicked, values: 'YES', 'NO'
+        :param network:
+            (optional) - network you would like to send using e.g. 'BNB', 'ETH' - omit for 'default' network
+        :param paymentid:
+            (optional) - the appropriate payment id/memo for the withdrawal where permitted
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+
+        """
+        request_data = {"cointype": cointype, "amount": amount, "address": address}
+        return self._request("/api/v2/my/coin/withdraw/send/", request_data)
+
+    def rostatuscheck(self):
+        """
+        Read Only Status Check
+
+        :return:
+            - **status** - ok
+
+        """
+        request_data = {}
+        return self._request("/api/v2/ro/status/", request_data)
+
+    def marketorders(self, cointype, markettype):
+        """
+        Open Market Orders
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param markettype:
+            (optional, available markets only)) market coin short name, example values 'AUD', 'USDT'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **buyorders** - list of top 20 open buy order rates for the given coin
+            - **sellorders** - list of top 20 open sell orders rates for the given coin
+
+        """
+        request_data = {"cointype":cointype, "markettype":markettype}
+        return self._request("/api/v2/ro/orders/market/open/", request_data)
+
+    def completedmarket(self, cointype, markettype, startdate, enddate, limit):
+        """
+        Completed Market Orders
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param markettype:
+            (optional, available markets only)) market coin short name, example values 'AUD', 'USDT'
+        :param startdate:
+            (optional, note: date is UTC date or UNIX EPOCH time) format 'YYYY-MM-DD' or e.g. 1614824116
+        :param enddate:
+            (optional, note: date is UTC date or UNIX EPOCH time) format 'YYYY-MM-DD' or e.g. 1614824116
+        :param limit:
+            (optional, default is 200 records, max is 500 records)
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **buyorders** - list of top 100 completed buy orders for the given coin
+            - **sellorders** - list of top 100 completed sell orders for the given coin
+
+        """
+        request_data = {"cointype":cointype, "markettype":markettype, "startdate":startdate, "enddate":enddate, "limit":limit}
+        return self._request("/api/v2/ro/orders/market/completed/", request_data)
+
+    def my_balances(self):
+        """
+        My Coin Balances
+
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **balances** - array containing one object for each coin with your balance, AUD value and rate for that coin
+
+        """
+        request_data = {}
+        return self._request("/api/v2/ro/my/balances/", request_data)
+
+    def my_coinbalance(self, cointype):
+        """
+        My Coin Balance
+
+        :param cointype:
+            coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **balance** - object containing one property with your balance, AUD value and rate for that coin
+
+        """
+        request_data = {"cointype":cointype}
+        return self._request("/api/v2/ro/my/balance/", request_data)
+
+    def my_marketorders(self, cointype, markettype):
+        """
+        My Open Market Orders
+
+        :param cointype:
+            (optional) coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param markettype:
+            (optional) market coin short name, example value 'USDT', 'AUD'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **buyorders** - array containing your open buy orders
+            - **sellorders** - array containing your open sell orders
+
+        """
+        request_data = {"cointype":cointype, "markettype":markettype}
+        return self._request("/api/v2/ro/my/orders/market/open/", request_data)
+
+    def my_limitorders(self, cointype):
+        """
+        My Open Limit Orders
+
+        :param cointype:
+            (optional) coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **buyorders** - array containing your open buy orders
+            - **sellorders** - array containing your open sell orders
+
+        """
+        request_data = {"cointype":cointype}
+        return self._request("/api/v2/ro/my/orders/limit/open/", request_data)
+
+    def my_orderhistory(self, cointype, markettype, startdate, enddate, limit):
+        """
+        My Order History
+
+        :param cointype:
+            (optional) coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param markettype:
+            (optional, available markets only)) market coin short name, example values 'AUD', 'USDT'
+        :param startdate:
+            (optional, note: date is UTC date or UNIX EPOCH time) format 'YYYY-MM-DD' or e.g. 1614824116
+        :param enddate:
+            (optional, note: date is UTC date or UNIX EPOCH time) format 'YYYY-MM-DD' or e.g. 1614824116
+        :param limit:
+            (optional, default is 200 records, max is 500 records)
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **buyorders** - array containing your buy order history
+            - **sellorders** - array containing your sell order history
+
+        """
+        request_data = {"cointype":cointype, "markettype":markettype, "startdate":startdate, "enddate":enddate, "limit":limit}
+        return self._request("/api/v2/ro/my/orders/completed/", request_data)
+
+    def my_markethistory(self, cointype, markettype, startdate, enddate, limit):
+        """
+        My Market Order History
+
+        :param cointype:
+            (optional) coin short name, example value 'BTC', 'LTC', 'DOGE'
+        :param markettype:
+            (optional, available markets only)) market coin short name, example values 'AUD', 'USDT'
+        :param startdate:
+            (optional, note: date is UTC date or UNIX EPOCH time) format 'YYYY-MM-DD' or e.g. 1614824116
+        :param enddate:
+            ((optional, note: date is UTC date or UNIX EPOCH time) format 'YYYY-MM-DD' or e.g. 1614824116
+        :param limit:
+            (optional, default is 200 records, max is 500 records)
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **buyorders** - array containing your buy order history
+            - **sellorders** - array containing your sell order history
+
+        """
+        request_data = {"cointype":cointype, "markettype":markettype, "startdate":startdate, "enddate":enddate, "limit":limit}
+        return self._request("/api/v2/ro/my/orders/market/completed/", request_data)
+
+    def my_transferhistory(self, startdate, enddate):
+        """
+        My Send & Receive History
+
+        :param startdate:
+            (optional) format 'YYYY-MM-DD'
+        :param enddate:
+            (optional) format 'YYYY-MM-DD'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **sendtransactions** - array containing your coin send transaction history
+            - **receivetransactions** - array containing your coin receive transaction history
+
+        """
+        request_data = {"startdate":startdate, "enddate":enddate}
+        return self._request("/api/v2/ro/my/sendreceive/", request_data)
+
+    def my_deposithistory(self, startdate, enddate):
+        """
+        My Deposit History
+
+        :param startdate:
+            (optional) format 'YYYY-MM-DD'
+        :param enddate:
+            (optional) format 'YYYY-MM-DD'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **deposits** - array containing your AUD deposit history
+
+        """
+        request_data = {"startdate":startdate, "enddate":enddate}
+        return self._request("/api/v2/ro/my/deposits/", request_data)
+
+    def my_withdrawhistory(self, startdate, enddate):
+        """
+        My Withdrawal History
+
+        :param startdate:
+            (optional) format 'YYYY-MM-DD'
+        :param enddate:
+            (optional) format 'YYYY-MM-DD'
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **withdrawals** - array containing your AUD withdrawal history
+
+        """
+        request_data = {"startdate":startdate, "enddate":enddate}
+        return self._request("/api/v2/ro/my/withdrawals/", request_data)
+
+    def my_affiliatepayments(self):
+        """
+        My Affiliate Payments
+
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **payments** - array containing one object for each completed affiliate payment
+
+        """
+        request_data = {}
+        return self._request("/api/v2/ro/my/affiliatepayments/", request_data)
+
+    def my_referralpayment(self):
+        """
+        My Referral Payments
+
+        :return:
+            - **status** - ok, error
+            - **message** - ok, description of error if error occurred
+            - **payments** - array containing one object for each completed referral payment
+
+        """
+        request_data = {}
+        return self._request("/api/v2/ro/my/referralpayments/", request_data)
