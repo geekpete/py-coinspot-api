@@ -48,7 +48,7 @@ class CoinSpot:
 
     _api_key = ""
     _api_secret = ""
-    _endpoint = "www.coinspot.com.au"
+    _endpoint = "https://www.coinspot.com.au"
     _logging = "coinspot.log"
     _debug = False
 
