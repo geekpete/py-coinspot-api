@@ -122,49 +122,7 @@ class CoinSpot:
             hashlib.sha512,
         ).hexdigest()
 
-    def _request(self, path, postdata):
-        nonce = int(time() * 1000000)
-        postdata["nonce"] = nonce
-        params = json.dumps(postdata, separators=(",", ":"))
-        signedMessage = self._get_signed_request(params)
-        headers = {}
-        headers["Content-type"] = "application/json"
-        headers["Accept"] = "text/plain"
-        headers["key"] = self._api_key
-        headers["sign"] = signedMessage
-        headers["User-Agent"] = (
-            "py-coinspot-api/%s (https://github.com/geekpete/py-coinspot-api)"
-            % __version__
-        )
-        if self._debug:
-            logging.warning(self.timestamp + " " + str(headers))
-        conn = http.client.HTTPSConnection(self._endpoint)
-        if self._debug:
-            conn.set_debuglevel(1)
-        response_data = '{"status":"invalid","error": "Did not make request"}'
-        try:
-            conn.request("POST", path, params, headers)
-            response = conn.getresponse()
-            if self._debug:
-                logging.warning(self.timestamp + " " + str(response))
-                logging.warning(self.timestamp + " " + str(response.msg))
-            # print response.status, response.reason
-            response_data = response.read()
-            if self._debug:
-                logging.warning(self.timestamp + " " + str(response_data))
-            conn.close()
-        except IOError as error:
-            if self._debug:
-                error_text = "Attempting to make request I/O error({0}): {1}".format(
-                    error.errno, error.strerror
-                )
-                logging.warning(self.timestamp + " " + error_text)
-                response_data = '{"status":"invalid","error": "' + error_text + '"}'
-        except:
-            exit("Unexpected error: {0}".format(sys.exc_info()[0]))
-
-        return response_data
-
+    
     def latestprices(self):
         """
         Latest Prices
