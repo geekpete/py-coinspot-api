@@ -158,7 +158,6 @@ class CoinSpot:
 
         # Request
         response_data = requests.post(path, data=params, headers=headers)
-
         return response_data
 
 
@@ -426,7 +425,7 @@ class CoinSpot:
         request_data = {"cointypesell":cointypesell, "cointypebuy":cointypebuy, "amount":amount}
         return self._request("/api/v2/quote/swap/now/", request_data)
 
-    def buymarket(self, cointype, amount, rate, markettype):
+    def buymarket(self, cointype, amount, rate, markettype="AUD", **kwargs):
         """
         Place Markey Buy Order
 
@@ -448,10 +447,17 @@ class CoinSpot:
             - **id** - id of buy order created which can be used to cancel the order if desired
 
         """
+        # Required parameters
         request_data = {"cointype":cointype, "amount":amount, "rate":rate, "markettype":markettype}
+        
+        # Optional parameter
+        for key, value in kwargs.items():
+            if key == "markettype":
+                request_data[key] = value
+        
         return self._request("/api/v2/my/buy/", request_data)
 
-    def buynow(self, cointype, amounttype, amount):
+    def buynow(self, cointype, amounttype, amount, **kwargs):
         """
         Place Buy Now Order
 
@@ -476,10 +482,17 @@ class CoinSpot:
             - **total** - total amount in market currency
 
         """
+        # Required parameter
         request_data = {"cointype":cointype, "amounttype":amounttype, "amount":amount}
+        
+        # Optional parameter
+        for key, value in kwargs.items():
+            if key == "rate" or key == "threshold" or key == "direction":
+                request_data[key] = value
+        
         return self._request("/api/v2/my/buy/now/", request_data)
 
-    def sellmarket(self, cointype, amount, rate, markettype):
+    def sellmarket(self, cointype, amount, rate, **kwargs):
         """
         Place Market Sell Order
 
@@ -490,7 +503,7 @@ class CoinSpot:
         :param rate:
             rate in AUD you are willing to sell for, max precision 8 decimal places
         :param markettype:
-            (optional, available markets only, default 'AUD') market coin short name to use to sell the coin into, example value 'USDT'
+            OPTIONAL use markettype='market', example: sellmarket('BTC', 10, 10, markettype='USDT') (optional, available markets only, default 'AUD') market coin short name to use to sell the coin into, example value 'USDT'
         :return:
             - **status** - ok, error
             - **message** - ok, description of error if error occurred
@@ -501,10 +514,17 @@ class CoinSpot:
             - **id** - id of sell order created which can be used to cancel the order if desired
 
         """
+        # Required parameters
         request_data = {"cointype":cointype, "amount":amount, "rate":rate, "markettype":markettype}
+
+        # Optional parameters
+        for key, value in kwargs.items():
+            if key == "markettype":
+                request_data[key] = value
+
         return self._request("/api/v2/my/sell/", request_data)
 
-    def sellnow(self, cointype, amounttype, amount):
+    def sellnow(self, cointype, amounttype, amount, **kwargs):
         """
         Place Sell Now Order
 
@@ -530,10 +550,17 @@ class CoinSpot:
             - **total** - total amount in market currency
 
         """
+        # Required parameters
         request_data = {"cointype":cointype, "amounttype":amounttype, "amount":amount}
+
+        # Optional parameters
+        for key, value in kwargs.items():
+            if key == "rate" or key == "threshold" or key == "direction":
+                request_data[key] = value
+
         return self._request("/api/v2/my/sell/now/", request_data)
 
-    def swapnow(self, cointypesell, cointypebuy, amount):
+    def swapnow(self, cointypesell, cointypebuy, amount, **kwargs):
         """
         Place Swap Now Order
 
@@ -559,7 +586,14 @@ class CoinSpot:
             - **total** - total amount in swapped coin currency
 
         """
+        # Required parameters
         request_data = {"cointypesell":cointypesell, "cointypebuy":cointypebuy, "amount":amount}
+
+        # Optional parameters
+        for key, value in kwargs.items():
+            if key == "rate" or key == "threshold" or key == "direction":
+                request_data[key] = value
+
         return self._request("/api/v2/my/swap/now/", request_data)
 
     def cancelbuy(self, id):
@@ -606,7 +640,7 @@ class CoinSpot:
         request_data = {"cointype":cointype}
         return self._request("/api/v2/my/coin/withdraw/senddetails/", request_data)
 
-    def withdraw(self, cointype, amount, address):
+    def withdraw(self, cointype, amount, address, **kwargs):
         """
         Coin Withdrawal
 
@@ -627,7 +661,14 @@ class CoinSpot:
             - **message** - ok, description of error if error occurred
 
         """
+        # Required parameters
         request_data = {"cointype": cointype, "amount": amount, "address": address}
+
+        # Optional parameters
+        for key, value in kwargs.items():
+            if key == "emailconfirm" or key == "network" or key == "paymentid":
+                request_data[key] = value
+
         return self._request("/api/v2/my/coin/withdraw/send/", request_data)
 
     def rostatuscheck(self):
@@ -641,7 +682,7 @@ class CoinSpot:
         request_data = {}
         return self._request("/api/v2/ro/status/", request_data)
 
-    def marketorders(self, cointype, markettype):
+    def marketorders(self, cointype, markettype='AUD'):
         """
         Open Market Orders
 
@@ -656,10 +697,12 @@ class CoinSpot:
             - **sellorders** - list of top 20 open sell orders rates for the given coin
 
         """
+        # Required parameter
         request_data = {"cointype":cointype, "markettype":markettype}
+
         return self._request("/api/v2/ro/orders/market/open/", request_data)
 
-    def completedmarket(self, cointype, markettype, startdate, enddate, limit):
+    def completedmarket(self, cointype, markettype='AUD', **kwargs):
         """
         Completed Market Orders
 
@@ -680,7 +723,14 @@ class CoinSpot:
             - **sellorders** - list of top 100 completed sell orders for the given coin
 
         """
-        request_data = {"cointype":cointype, "markettype":markettype, "startdate":startdate, "enddate":enddate, "limit":limit}
+        # Required parameter
+        request_data = {"cointype":cointype, "markettype":markettype}
+        
+        # Optional parameters
+        for key, value in kwargs.items():
+            if key == "startdate" or key == "enddate" or key == "limit":
+                request_data[key] = value
+
         return self._request("/api/v2/ro/orders/market/completed/", request_data)
 
     def my_balances(self):
@@ -711,7 +761,7 @@ class CoinSpot:
         request_data = {"cointype":cointype}
         return self._request("/api/v2/ro/my/balance/", request_data)
 
-    def my_marketorders(self, cointype, markettype):
+    def my_marketorders(self, cointype, markettype='AUD'):
         """
         My Open Market Orders
 
@@ -745,7 +795,7 @@ class CoinSpot:
         request_data = {"cointype":cointype}
         return self._request("/api/v2/ro/my/orders/limit/open/", request_data)
 
-    def my_orderhistory(self, cointype, markettype, startdate, enddate, limit):
+    def my_orderhistory(self, cointype, markettype='AUD', **kwargs):
         """
         My Order History
 
@@ -766,10 +816,17 @@ class CoinSpot:
             - **sellorders** - array containing your sell order history
 
         """
-        request_data = {"cointype":cointype, "markettype":markettype, "startdate":startdate, "enddate":enddate, "limit":limit}
+        # Required Parameters
+        request_data = {"cointype":cointype, "markettype":markettype}
+
+        # Optional parameters
+        for key, value in kwargs.items():
+            if key == "startdate" or key == "enddate" or key == "limit":
+                request_data[key] = value
+
         return self._request("/api/v2/ro/my/orders/completed/", request_data)
 
-    def my_markethistory(self, cointype, markettype, startdate, enddate, limit):
+    def my_markethistory(self, cointype, markettype="AUD", **kwargs):
         """
         My Market Order History
 
@@ -790,10 +847,17 @@ class CoinSpot:
             - **sellorders** - array containing your sell order history
 
         """
-        request_data = {"cointype":cointype, "markettype":markettype, "startdate":startdate, "enddate":enddate, "limit":limit}
+        # Required parameters
+        request_data = {"cointype":cointype, "markettype":markettype}
+        
+        # Optional parameters
+        for key, value in kwargs.items():
+            if key == "startdate" or key == "enddate" or key == "limit":
+                request_data[key] = value
+
         return self._request("/api/v2/ro/my/orders/market/completed/", request_data)
 
-    def my_transferhistory(self, startdate, enddate):
+    def my_transferhistory(self, **kwargs):
         """
         My Send & Receive History
 
@@ -808,10 +872,17 @@ class CoinSpot:
             - **receivetransactions** - array containing your coin receive transaction history
 
         """
-        request_data = {"startdate":startdate, "enddate":enddate}
+        # Required parameter
+        request_data = {}
+
+        # Optional parameters
+        for key, value in kwargs.items():
+            if key == "startdate" or key == "enddate":
+                request_data[key] = value
+
         return self._request("/api/v2/ro/my/sendreceive/", request_data)
 
-    def my_deposithistory(self, startdate, enddate):
+    def my_deposithistory(self, **kwargs):
         """
         My Deposit History
 
@@ -825,10 +896,17 @@ class CoinSpot:
             - **deposits** - array containing your AUD deposit history
 
         """
-        request_data = {"startdate":startdate, "enddate":enddate}
+        # Required parameter
+        request_data = {}
+
+        # Optional parameters
+        for key, value in kwargs.items():
+            if key == "startdate" or key == "enddate":
+                request_data[key] = value
+
         return self._request("/api/v2/ro/my/deposits/", request_data)
 
-    def my_withdrawhistory(self, startdate, enddate):
+    def my_withdrawhistory(self, **kwargs):
         """
         My Withdrawal History
 
@@ -842,7 +920,14 @@ class CoinSpot:
             - **withdrawals** - array containing your AUD withdrawal history
 
         """
-        request_data = {"startdate":startdate, "enddate":enddate}
+        # Required parameter
+        request_data = {}
+
+        # Optional parameters
+        for key, value in kwargs.items():
+            if key == "startdate" or key == "enddate":
+                request_data[key] = value
+        
         return self._request("/api/v2/ro/my/withdrawals/", request_data)
 
     def my_affiliatepayments(self):
