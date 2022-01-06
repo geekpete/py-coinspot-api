@@ -114,7 +114,7 @@ class CoinSpot:
         )
 
     def _get_signed_request(self, data):
-        print(self)
+        # print(self)
         # print(hmac.new(key.encode('utf-8'), data.encode('utf-8'), hashlib.sha512).hexdigest()
         return hmac.new(
             str((self._api_secret)).encode("utf-8"),
@@ -761,7 +761,7 @@ class CoinSpot:
         request_data = {"cointype":cointype}
         return self._request("/api/v2/ro/my/balance/", request_data)
 
-    def my_marketorders(self, cointype, markettype='AUD'):
+    def my_marketorders(self, **kwargs):
         """
         My Open Market Orders
 
@@ -776,10 +776,17 @@ class CoinSpot:
             - **sellorders** - array containing your open sell orders
 
         """
-        request_data = {"cointype":cointype, "markettype":markettype}
+        # Required Parameters
+        request_data = {}
+
+        # Optional parameters
+        for key, value in kwargs.items():
+            if key == "cointype" or key == "markettype":
+                request_data[key] = value
+            
         return self._request("/api/v2/ro/my/orders/market/open/", request_data)
 
-    def my_limitorders(self, cointype):
+    def my_limitorders(self, **kwargs):
         """
         My Open Limit Orders
 
@@ -792,10 +799,17 @@ class CoinSpot:
             - **sellorders** - array containing your open sell orders
 
         """
-        request_data = {"cointype":cointype}
+        # Required Parameters
+        request_data = {}
+
+        # Optional parameters
+        for key, value in kwargs.items():
+            if key == "cointype":
+                request_data[key] = value
+            
         return self._request("/api/v2/ro/my/orders/limit/open/", request_data)
 
-    def my_orderhistory(self, cointype, markettype='AUD', **kwargs):
+    def my_orderhistory(self, **kwargs):
         """
         My Order History
 
@@ -808,7 +822,7 @@ class CoinSpot:
         :param enddate:
             (optional, note: date is UTC date or UNIX EPOCH time) format 'YYYY-MM-DD' or e.g. 1614824116
         :param limit:
-            (optional, default is 200 records, max is 500 records)
+            (optional, default is 200 records, max is 500 records). Must be in int format not string.
         :return:
             - **status** - ok, error
             - **message** - ok, description of error if error occurred
@@ -817,16 +831,16 @@ class CoinSpot:
 
         """
         # Required Parameters
-        request_data = {"cointype":cointype, "markettype":markettype}
+        request_data = {}
 
         # Optional parameters
         for key, value in kwargs.items():
-            if key == "startdate" or key == "enddate" or key == "limit":
+            if key == "cointype" or key == "markettype" or key == "startdate" or key == "enddate" or key == "limit":
                 request_data[key] = value
 
         return self._request("/api/v2/ro/my/orders/completed/", request_data)
 
-    def my_markethistory(self, cointype, markettype="AUD", **kwargs):
+    def my_markethistory(self, **kwargs):
         """
         My Market Order History
 
@@ -848,11 +862,11 @@ class CoinSpot:
 
         """
         # Required parameters
-        request_data = {"cointype":cointype, "markettype":markettype}
+        request_data = {}
         
         # Optional parameters
         for key, value in kwargs.items():
-            if key == "startdate" or key == "enddate" or key == "limit":
+            if key == "cointype" or key == "markettype" or key == "startdate" or key == "enddate" or key == "limit":
                 request_data[key] = value
 
         return self._request("/api/v2/ro/my/orders/market/completed/", request_data)
