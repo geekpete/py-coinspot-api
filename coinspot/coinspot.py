@@ -425,7 +425,7 @@ class CoinSpot:
         request_data = {"cointypesell":cointypesell, "cointypebuy":cointypebuy, "amount":amount}
         return self._request("/api/v2/quote/swap/now/", request_data)
 
-    def buymarket(self, cointype, amount, rate, markettype="AUD", **kwargs):
+    def buymarket(self, cointype, amount, rate, markettype="AUD"):
         """
         Place Markey Buy Order
 
@@ -449,11 +449,6 @@ class CoinSpot:
         """
         # Required parameters
         request_data = {"cointype":cointype, "amount":amount, "rate":rate, "markettype":markettype}
-        
-        # Optional parameter
-        for key, value in kwargs.items():
-            if key == "markettype":
-                request_data[key] = value
         
         return self._request("/api/v2/my/buy/", request_data)
 
@@ -515,7 +510,7 @@ class CoinSpot:
 
         """
         # Required parameters
-        request_data = {"cointype":cointype, "amount":amount, "rate":rate, "markettype":markettype}
+        request_data = {"cointype":cointype, "amount":amount, "rate":rate}
 
         # Optional parameters
         for key, value in kwargs.items():
@@ -702,7 +697,7 @@ class CoinSpot:
 
         return self._request("/api/v2/ro/orders/market/open/", request_data)
 
-    def completedmarket(self, cointype, markettype='AUD', **kwargs):
+    def completedmarket(self, cointype, **kwargs):
         """
         Completed Market Orders
 
@@ -724,11 +719,11 @@ class CoinSpot:
 
         """
         # Required parameter
-        request_data = {"cointype":cointype, "markettype":markettype}
+        request_data = {"cointype":cointype}
         
         # Optional parameters
         for key, value in kwargs.items():
-            if key == "startdate" or key == "enddate" or key == "limit":
+            if key == "markettype" or key == "startdate" or key == "enddate" or key == "limit":
                 request_data[key] = value
 
         return self._request("/api/v2/ro/orders/market/completed/", request_data)
