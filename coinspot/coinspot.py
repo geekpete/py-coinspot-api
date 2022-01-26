@@ -329,4 +329,4 @@ class CoinSpot:
 
         """
         request_data = {"cointype": cointype, "amount": amount, "rate": rate}
-        self._request("/api/my/sell", request_data)
+        return self._request("/api/my/sell", request_data)
